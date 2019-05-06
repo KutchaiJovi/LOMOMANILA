@@ -1,0 +1,54 @@
+{% extends "index.html" %}
+{% block title %} - LOGIN{% endblock %}
+
+{% block content %}
+<div class="columns is-mobile is-centered" style="margin-top: 50px;">
+    <div class="column is-half-desktop">
+    <div id="content">
+        <section class="hero">
+            <div class="hero-body field">
+                <div class="columns">
+                    <div class="column">
+                        <form action="/login" method="post" style="width: 250px;">
+                            <h1 class="font1" style="font-size: 25px; margin-bottom: 10px;">LOMOMANILA</h1>
+                            <div class="control">
+                                <input class="input is-light is-medium is-focused" type="text" name="username" placeholder="Username" required>
+                            </div><br>
+                            <div class="control">
+                                <input class="input is-light is-medium is-focused" type="password" name="password" placeholder="Password" required>
+                            </div>
+
+                            {% if test == 2 %}
+                                <p class="help is-light" style="padding-top: 10px;">Something went wrong. Kindly check <br>your username and password.</p>
+                            {% endif %}
+
+                            <div class="control">  
+                                <button class="button1">SIGN IN</button>
+                            </div>
+                            <hr/>
+                            <div class="control">
+                                <p class="help is-white">Don't have an account?</p>  
+                                <a class="sign" href="/lomoOn" style="color: #AF684A;">SIGN UP</a>
+                            </div>
+                        </form><br>
+                    </div>
+                    <div class="column">
+                        <div class="tile is-parent">
+                            <article class="tile is-child notification" style="background-color: #d29d62;">
+                                <p class="font1" style="font-size: 30px; padding: 0;">LONG LIVE</p>
+                                <span class="font1" style="font-size: 50px;"> FILM </span>
+                                <p class="subtitle font1">LOAD. SHOOT. REPEAT.</p>
+                                <div class="content">
+                                    A way of shooting and lifestyle.
+                                </div>
+                            </article>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br>
+    </div>
+</div>
+</div>
+{% endblock %}

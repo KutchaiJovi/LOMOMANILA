@@ -1,0 +1,109 @@
+{% extends "index.html" %}
+{% block title %}- SIGNUP{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-body">
+        <div class="columns">
+            <div class="column tile1">
+                <div class="tile is-parent has-text-right" style="width: 400px;">
+                    <article class="tile is-child notification" style="background-color: #d29d62;">
+                        <span class="font1" style="font-size: 60px;">LOMO ON!</span>
+                        <p class="subtitle font1">MANILA BASED FILM PHOTOGRAPHY COMMUNITY.</p>
+                        <div class="content">
+                            An odd mix of film enthusiast; <br>shooting and collaborating together.
+                        </div>
+                    </article>
+                </div>
+            </div>
+            <div class="column">
+            {% if sign == 1 %}
+            <form action="/signup-next" method="post" style="width: 400px;">
+                <h1 class="font1" style="font-size: 25px; margin: 10px 0;">NEXT</h1>
+                    <div class="control">
+                        <textarea class="textarea is-light" placeholder="Tell something about yourself." name="description" required></textarea>
+                    </div><br>
+                    
+                    <div class="control">
+                        <input class="input is-light is-focused" style="width:20em;" type="text" name="favecam" placeholder="Your film camera of all time." required>
+                    </div><br>
+
+                    <div class="control">
+                        <input class="input is-light is-focused" style="width:20em;" type="text" name="faveroll" placeholder="Favorite film roll." required>
+                    </div><br>
+
+                    <div class="control">
+                        <input class="input is-light is-focused" style="width:20em;" type="text" name="favesubject" placeholder="Favorite subject to shoot." required>
+                    </div><br>
+
+                    <div class="control has-text-right">  
+                        <button class="button1">SUBMIT</button>
+                    </div>
+            </form><br>
+            {% else %}
+            <form action="/signup" method="post" style="width: 400px;">
+                <h1 class="font1" style="font-size: 25px; margin: 10px 0;">START HERE</h1>
+                    <div class="control">
+                        <input class="input is-light is-focused" style="width:20em;" type="text" name="username" placeholder="Username" required>
+                        {% if check == True %}
+                            <p class="help is-light" style="padding-top: 10px;">Username already exists. Choose another one.</p>
+                        {% endif %}
+                    </div><br>
+
+                    <div class="columns">
+                        <div class="column">
+                            <input class="input is-light" type="text" name="firstName" placeholder="First Name" required>
+                        </div>
+                        <div class="column">
+                            <input class="input is-light" type="text" name="lastName" placeholder="Last Name" required>
+                        </div><br>
+                    </div>
+
+                    <div class="columns">
+                        <div class="column">
+                            <label for="" class="label" style="color: white; font-size: 10px;">GENDER</label>
+                            <div class="select is-light">
+                                <select name="gender">
+                                    <option> - </option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Fluid</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="column">
+                            <label for="" class="label" style="color: white; font-size: 10px;">BIRTHDATE</label>
+                            <input class="input is-light" style="width:15em;" type="date" name="bdate" placeholder="Birthdate" required>
+                        </div>
+                        <div class="column"></div>
+                    </div>
+                            
+                    <div class="control">
+                        <input class="input is-light" style="width:20em;" type="email" name="email" placeholder="Email Adress" required>
+                    </div><br>
+
+                    <div class="control">
+                        <input class="input is-light is-focused" style="width:15em;" type="text" name="igUsername" placeholder="@instagram_username" required>
+                    </div><br>
+                    
+                    <div class="columns">
+                        <div class="column">
+                            <input class="input is-light" type="password" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="column">
+                            <input class="input is-light" type="password" name="confPassword" placeholder="Confirm Password" required>
+                        </div>
+                    </div>
+                    {% if test == 2 %}
+                        <p class="help is-light" style="padding-top: 10px;">Passwords didn't matched.<br>Kindly double-check and try again.</p>
+                    {% endif %}
+                    <div class="control has-text-right">  
+                        <button class="button1">NEXT</button>
+                    </div>
+            </form><br>
+            {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
