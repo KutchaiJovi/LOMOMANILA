@@ -36,6 +36,42 @@ def create_schema():
     db.create_all()
     return 'Schema created.'
 
+@app.route('/update/<id>', methods=['POST'])
+def profile_update(id):
+
+    if 'username' in session :
+        update = SignupNext.query.get(id) #pass id together with submit
+        update.description = request.form['editDesc']
+        update.favecam = request.form['editCam']
+        update.faveroll = request.form['editRoll']
+        update.favesubject = request.form['editSub']
+
+        updateIG = User.query.get(id)
+        updateIG.ig = request.form['editIG']
+        
+        db.session.add(update, updateIG)
+        db.session.commit()
+        
+        return redirect(url_for('userProfile'))
+
+@app.route('/settings/<id>', methods=['POST'])
+def settings(id):
+
+    if 'username' in session :
+        settings = User.query.get(id)
+        settings.username = request.form['editusername']
+        settings.fname = request.form['editfname']
+        settings.lname = request.form['editlname']
+        settings.gender = request.form['editgender']
+        settings.bdate = request.form['editbdate']
+        settings.pword = request.form['editpword']
+
+        db.session.add(settings)
+        db.session.commit()
+
+        return redirect(url_for('home'))
+
+
 # STATIC PAGES #
 @app.route('/')
 def index():
