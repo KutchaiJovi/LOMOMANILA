@@ -2,7 +2,8 @@
 {% block title %} - LOGIN{% endblock %}
 
 {% block content %}
-<div class="columns is-mobile is-centered" style="margin-top: 50px;">
+
+<div class="columns is-mobile is-centered" style="margin-top: 30px;">
     <div class="column is-half-desktop">
     <div id="content">
         <section class="hero">
@@ -19,7 +20,8 @@
                             </div>
 
                             {% if test == 2 %}
-                                <p class="help is-light" style="padding-top: 10px;">Something went wrong. Kindly check <br>your username and password.</p>
+                                <p class="help is-light" style="padding-top: 10px;">Something went wrong. Kindly check <br>your username and password.<br><br>
+                                <a href="/reset">Forgot password?</a></p>
                             {% endif %}
 
                             <div class="control">  

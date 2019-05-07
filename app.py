@@ -5,22 +5,25 @@ from models import SignupNext
 from models import Post
 from models import Comment
 
-# from flask_migrate import Migrate, MigrateCommand
-
 from routes.auth import auth
 import datetime
 now = datetime.datetime.now()
+
+from werkzeug.utils import secure_filename
+UPLOAD_FOLDER = '/path/to/the/uploads'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+# from flask_migrate import Migrate, MigrateCommand
 
 app = Flask (__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:secret@database/testdatabase'
                                         #<dialect+driver>://<username>:<password>@ghost/<database>
 db.init_app(app)
-# migrate = Migrate(app, db)
 
 app.register_blueprint(auth)
 app.url_map.strict_slashes = False
 
 app.secret_key = 'lomomanila'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # DATABASE #
 @app.route('/test-connection')
@@ -36,6 +39,7 @@ def create_schema():
     db.create_all()
     return 'Schema created.'
 
+# UPDATE #
 @app.route('/update/<id>', methods=['POST'])
 def profile_update(id):
 
@@ -71,7 +75,6 @@ def settings(id):
 
         return redirect(url_for('home'))
 
-
 # STATIC PAGES #
 @app.route('/')
 def index():
@@ -97,6 +100,19 @@ def loginForm():
         return redirect(url_for('home'))
     return render_template('login.html', value=0)
 
+@app.route('/reset')
+def reset():
+    return render_template('resetPassword.html', value=0)
+
+@app.route('/resetpassword', methods=['POST'])
+def resetpassword():
+
+    pword = request.form['pword']
+    user_email = User.query.filter_by(email=request.form['email'], pword=pword).first()
+    if not user_email:
+        return render_template('resetPassword.html', value=0, test=3, pword=pword )
+    return render_template('resetPassword.html', value=0, test=2)
+
 @app.route('/logout')
 def logout():
     session.pop('username', None)
@@ -112,9 +128,8 @@ def signUp():
     if request.method == 'POST' :
         users = User()
         newUser = request.form['username']
-        # exists = db.session.query(db.session.query(User).filter_by(username=newUser).exists()).scalar()
         checkUser = User.query.filter_by(username=newUser).first()
-        if newUser != checkUser :
+        if not checkUser:
             users.username = newUser
             users.fname = request.form['firstName']
             users.lname = request.form['lastName']
@@ -182,7 +197,7 @@ def userPost():
         newPost.postDate = now.strftime("%Y-%m-%d %H:%M")
 
         db.session.add(newPost)
-        # newPost.store()
+        newPost.store()
         flash("Photo saved.")
         db.session.commit()
         return render_template('home.html', value=1, users=user, newPost=newPost)

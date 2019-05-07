@@ -1,17 +1,18 @@
 import flask_sqlalchemy
+from datetime import datetime
 
 db = flask_sqlalchemy.SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
     fname = db.Column(db.String(100), nullable=False)
     lname = db.Column(db.String(100), nullable=False)
     gender = db.Column(db.String(10), nullable=False)
     bdate = db.Column(db.DateTime)
-    email = db.Column(db.String(100), nullable=False)
-    pword = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    pword = db.Column(db.String(100),  nullable=False)
     ig = db.Column(db.String(50), nullable=False)
 
 class SignupNext(db.Model):
@@ -25,12 +26,15 @@ class SignupNext(db.Model):
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
-    post = db.Column(db.String(1000), nullable=False)
+    post = db.Column(db.Text, nullable=False)
     image = db.Column(db.LargeBinary)
     filmCam = db.Column(db.String(100))
     filmRoll = db.Column(db.String(100))
-    postDate = db.Column(db.DateTime)
+    postDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     del_post = db.Column(db.Boolean, nullable=False, default=False)
+
+    users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    users = db.relationship('User', backref=db.backref('posts', lazy=True))
 
 class Comment(db.Model):
     __tablename__ = 'comments'
