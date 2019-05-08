@@ -80,6 +80,7 @@ def settings(id):
 def index():
     if 'username' in session :
         return redirect(url_for('home'))
+    session.clear()
     return render_template('index.html', value=0)
 
 @app.route('/about')
@@ -91,11 +92,12 @@ def loginForm():
 
     if request.method == 'GET' :
         return render_template('login.html', value=0)
-    if request.method == 'POST' :
+    elif request.method == 'POST' :
         session['username'] = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
         if not user:
+            session.clear()
             return render_template('login.html', test=2, value=0)
         return redirect(url_for('home'))
     return render_template('login.html', value=0)
@@ -107,11 +109,20 @@ def reset():
 @app.route('/resetpassword', methods=['POST'])
 def resetpassword():
 
-    pword = request.form['pword']
-    user_email = User.query.filter_by(email=request.form['email'], pword=pword).first()
-    if not user_email:
-        return render_template('resetPassword.html', value=0, test=3, pword=pword )
-    return render_template('resetPassword.html', value=0, test=2)
+    if request.method == 'POST' :
+        pword = request.form['newpword']
+        confpword = request.form['confpword']
+        update = User.query.filter_by(email=request.form['email']).first()
+        if update:
+            if confpword != pword :
+                return  render_template('resetPassword.html', value=0, check=2)
+            else :
+                update.pword = request.form['newpword']
+
+                db.session.add(update)
+                db.session.commit()
+                return redirect(url_for('loginForm'))
+        return render_template('resetPassword.html', value=0, test=3)
 
 @app.route('/logout')
 def logout():
@@ -149,7 +160,7 @@ def signUp():
                 db.session.add(users)
                 db.session.commit()
                 return render_template('signup.html', value=1, sign=1)
-        return render_template('signup.html', value=0, check=True)
+        return render_template('signup.html', value=0, check=1 , sign=0)
     return redirect(url_for('lomoOn'))
 
 @app.route('/signup-next', methods=['POST'])
