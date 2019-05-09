@@ -7,12 +7,12 @@ from models import Comment
 
 from routes.auth import auth
 import datetime
+import os
 now = datetime.datetime.now()
 
 from werkzeug.utils import secure_filename
-UPLOAD_FOLDER = '/path/to/the/uploads'
+UPLOAD_FOLDER = './static/img'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-# from flask_migrate import Migrate, MigrateCommand
 
 app = Flask (__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:secret@database/testdatabase'
@@ -175,7 +175,7 @@ def signUpNext():
 
     db.session.add(new)
     db.session.commit()
-    return redirect(url_for('profile'))
+    return redirect(url_for('userProfile'))
 
 #PROFILE PAGE
 @app.route('/profile')
@@ -192,26 +192,45 @@ def home():
     if 'username' in session :
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
-        return render_template('home.html', users=user, new=new, value=1)
+        newPost = Post.query.filter_by(users_id=user.id).all()
+        if not newPost :
+            return render_template('home.html', users=user, new=new, value=1, newPost=0)
+        return render_template('home.html', users=user, new=new, value=1, newPost=newPost)
     abort(404)
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/post', methods=['POST'])
 def userPost():
     if 'username' in session and 'lomoPhoto' in request.files :
-        user = User()
+        user = User.query.filter_by(username=session['username']).first()
+        userID = user.id
+
         newPost = Post()
 
         newPost.post = request.form['userPost']
-        newPost.image = request.files['lomoPhoto']
+        image = request.files['lomoPhoto']
         newPost.filmCam = request.form['cam']
         newPost.filmRoll = request.form['film']
         newPost.postDate = now.strftime("%Y-%m-%d %H:%M")
+        newPost.users_id = userID
 
+        filename = secure_filename(image.filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        newPost.imagepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        
         db.session.add(newPost)
-        newPost.store()
-        flash("Photo saved.")
         db.session.commit()
-        return render_template('home.html', value=1, users=user, newPost=newPost)
+        return redirect(url_for('home'))
+
+@app.route('/delete_post/<id>')
+def delete_post(id):
+    post = Post.query.get(id) # shortcut for Task.query.filter_by(id=1).first
+    db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 #ERROR PAGE
 @app.errorhandler(404)

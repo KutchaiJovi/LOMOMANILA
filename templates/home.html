@@ -80,7 +80,9 @@
                     </div>
                 </article>
               </div>
-
+              {% if newPost == 0 %}
+                  <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+              {% else %}
               <div class="box">
                 <article class="media">
                   <figure class="media-left">
@@ -88,64 +90,47 @@
                       <img src="https://bulma.io/images/placeholders/128x128.png">
                     </p>
                   </figure>
+
+                  
                   <div class="media-content">
                     <div class="content">
-                      <p>
-                        <strong>Barbara Middleton</strong>
-                        <br>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis porta eros lacus, nec ultricies elit blandit non. Suspendisse pellentesque mauris sit amet dolor blandit rutrum. Nunc in tempus turpis.
-                        <br>
-                        <nav class="level is-mobile">
-                          <div class="level-left">
-                            <a class="level-item" aria-label="reply">
-                              <span class="icon is-small">
-                                <i class="fas fa-reply" aria-hidden="true"></i>
-                              </span>
-                            </a>
-                            <a class="level-item" aria-label="retweet">
-                              <span class="icon is-small">
-                                <i class="fas fa-retweet" aria-hidden="true"></i>
-                              </span>
-                            </a>
-                            <a class="level-item" aria-label="like">
-                              <span class="icon is-small">
-                                <i class="fas fa-heart" aria-hidden="true"></i>
-                              </span>
-                            </a>
-                          </div>
-                          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
-                        </nav>
+                      <p class="is-capitalized">
+                        <strong>{{ users.fname }} {{ users.lname }}</strong>
+                        <br><br>
+                        {% for userPost in newPost %}
+                          <img src='{{ userPost.imagepath }}' height="200px;"><br>
+                          {{ userPost.post }}<br>
+                          {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
+                          <time datetime="1-1-2016">{{ userPost.postDate }}</time>
+
+                          <nav class="level is-mobile">
+                            <div class="level-left">
+                              <a class="level-item" aria-label="reply">
+                                <span class="icon is-small">
+                                  <i class="fas fa-reply" aria-hidden="true"></i>
+                                </span>
+                              </a>
+                              <a class="level-item" aria-label="retweet">
+                                <span class="icon is-small">
+                                  <i class="fas fa-retweet" aria-hidden="true"></i>
+                                </span>
+                              </a>
+                              <a class="level-item" aria-label="like">
+                                <span class="icon is-small">
+                                  <i class="fas fa-heart" aria-hidden="true"></i>
+                                </span>
+                              </a>
+                            </div>
+                          </nav>
+                          <hr>
+                        {% endfor %}
                       </p>
                     </div>
-                    <article class="media">
-                      <figure class="media-left">
-                        <p class="image is-48x48">
-                          <img src="https://bulma.io/images/placeholders/96x96.png">
-                        </p>
-                      </figure>
-                      <div class="media-content">
-                        <div class="content">
-                          <p>
-                            <strong>Sean Brown</strong>
-                            <br>
-                            Donec sollicitudin urna eget eros malesuada sagittis. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aliquam blandit nisl a nulla sagittis, a lobortis leo feugiat.
-                            <br>
-                            <small><a>Like</a> · <a>Reply</a> · 2 hrs</small>
-                          </p>
-                        </div>
-                
-                        <article class="media">
-                          Vivamus quis semper metus, non tincidunt dolor. Vivamus in mi eu lorem cursus ullamcorper sit amet nec massa.
-                        </article>
-                
-                        <article class="media">
-                          Morbi vitae diam et purus tincidunt porttitor vel vitae augue. Praesent malesuada metus sed pharetra euismod. Cras tellus odio, tincidunt iaculis diam non, porta aliquet tortor.
-                        </article>
-                      </div>
-                    </article>
                   </div>
+                  
                 </article>
               </div>
+              {% endif %}
               </div>
         </div>
     </div>

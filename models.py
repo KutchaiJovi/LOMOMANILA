@@ -32,7 +32,8 @@ class Post(db.Model):
     filmRoll = db.Column(db.String(100))
     postDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     del_post = db.Column(db.Boolean, nullable=False, default=False)
-
+    imagepath = db.Column(db.Text, nullable=True)
+    
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
 

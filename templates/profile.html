@@ -48,202 +48,193 @@
 </script>
 
 <div class="container is-mobile is-centered box" style="margin: 20px 50px;">
-        <div class="columns is-centered">
-            <div class="column is-4">
-                <div class="card">
-                    <div class="card-image">
-                        <figure class="image is-4by3">
-                        <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+    <div class="columns is-centered">
+        <div class="column is-4">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                    <div class="media-left">
+                        <figure class="image is-48x48">
+                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
                         </figure>
                     </div>
-                    <div class="card-content">
-                        <div class="media">
-                        <div class="media-left">
-                            <figure class="image is-48x48">
-                            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
-                            </figure>
-                        </div>
-                        <div class="media-content">
-                            <a href="profile.html"><p class="title is-4 is-capitalized">
-                                {{ users.fname }} {{ users.lname }}
-                            </p></a>
-                            <p class="subtitle is-6">
-                                lomomanila/{{ users.username }}
-                            </p>
-                        </div>
-                        </div>
-                    
-                        <div class="content">
-                            IG: <a href="https://www.instagram.com/{{ users.ig }}" target="_blank" style="color: #7A3934;">@{{ users.ig }}</a>
-                            <br>
+                    <div class="media-content">
+                        <a href="profile.html"><p class="title is-4 is-capitalized">
+                            {{ users.fname }} {{ users.lname }}
+                        </p></a>
+                        <p class="subtitle is-6">
+                            lomomanila/{{ users.username }}
+                        </p>
+                    </div>
+                    </div>
+                
+                    <div class="content">
+                        IG: <a href="https://www.instagram.com/{{ users.ig }}" target="_blank" style="color: #7A3934;">@{{ users.ig }}</a>
+                        <br>
+                    </div>
+                </div>
+                
+                <footer class="card-footer">
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
+                <!-- MODAL -->
+                    <div id="modal-ter" class="modal">
+                        <div class="modal-background">
+                            <div class="modal-card" style="margin-top: 20px;">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Edit Profile</p>
+                                    <button class="delete" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="content">
+                                        <form method="POST" action="/update/{{ new.id }}">
+
+                                            <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
+                                            <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
+                                            <hr>
+                                            
+                                            <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editCam" value="{{ new.favecam }}">
+                                            <hr>
+                                            
+                                            <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editRoll" value="{{ new.faveroll }}">
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">SHOOTS</label>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editSub" value="{{ new.favesubject }}">
+                                            <hr>
+
+                                            <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
+                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editIG" value="{{ users.ig }}">
+                                            
+                                    </div>
+                                </section>
+                                    <footer class="modal-card-foot">
+                                        <button class="button1" type="submit" name="submit">UPDATE</button>
+                                        </form>
+                                    </footer>
+                            </div>
                         </div>
                     </div>
-
-                    
-                    <footer class="card-footer">
-                        <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
-                    <!-- MODAL -->
-                        <div id="modal-ter" class="modal">
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter2" aria-haspopup="true" style="color: #7A3934;">SETTINGS</a>
+                    <!-- MODAL 2 -->
+                    <div id="modal-ter2" class="modal">
                             <div class="modal-background">
                                 <div class="modal-card" style="margin-top: 20px;">
                                     <header class="modal-card-head">
-                                        <p class="modal-card-title">Edit Profile</p>
+                                        <p class="modal-card-title">Update Information</p>
                                         <button class="delete" aria-label="close"></button>
                                     </header>
                                     <section class="modal-card-body">
                                         <div class="content">
-                                            <form method="POST" action="/update/{{ new.id }}">
+                                            <form method="POST" action="/settings/{{ new.id }}">
 
-                                                <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
-                                                <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
+                                                <label class="label is-dark" style="font-size: 10px;">USERNAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editusername" value="{{ users.username }}">
                                                 <hr>
                                                 
-                                                <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editCam" value="{{ new.favecam }}">
-                                                <hr>
-                                                
-                                                <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editRoll" value="{{ new.faveroll }}">
+                                                <label class="label is-dark" style="font-size: 10px;">FIRST NAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editfname" value="{{ users.fname }}">
                                                 <hr>
 
-                                                <label class="label is-dark" style="font-size: 10px;">SHOOTS</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editSub" value="{{ new.favesubject }}">
+                                                <label class="label is-dark" style="font-size: 10px;">LAST NAME</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editlname" value="{{ users.lname }}">
                                                 <hr>
 
-                                                <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editIG" value="{{ users.ig }}">
-                                                
+                                                <div class="columns">
+                                                    <div class="column">
+                                                        <label class="label is-dark" style="font-size: 10px;">GENDER</label>
+                                                        <div class="select is-light">
+                                                            <select name="editgender" value="{{ users.gender }}">
+                                                                <option> {{ users.gender }} </option>
+                                                                <option>Male</option>
+                                                                <option>Female</option>
+                                                                <option>Fluid</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="column">
+                                                        <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
+                                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ users.bdate }}" placeholder="{{ users.bdate }}" required>
+                                                    </div>
+                                                    <div class="column"></div>
+                                                </div>
+                                                <hr>
+
+                                                <label class="label is-dark" style="font-size: 10px;">EMAIL ADDRESS</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editemail" value="{{ users.email }}">
+                                                <hr>
+
+                                                <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
+                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ users.pword }}">
+
                                         </div>
                                     </section>
                                         <footer class="modal-card-foot">
-                                            <button class="button1" type="submit" name="submit">UPDATE</button>
+                                            <button class="button1" type="submit" name="sumbit">UPDATE</button>
                                             </form>
-                                            <!-- <button class="button1">CANCEL</button> -->
                                         </footer>
                                 </div>
                             </div>
                         </div>
-                        <a href="#" class="card-footer-item modal-button" data-target="modal-ter2" aria-haspopup="true" style="color: #7A3934;">SETTINGS</a>
-
-                        <!-- MODAL 2 -->
-
-                        <div id="modal-ter2" class="modal">
-                                <div class="modal-background">
-                                    <div class="modal-card" style="margin-top: 20px;">
-                                        <header class="modal-card-head">
-                                            <p class="modal-card-title">Update Information</p>
-                                            <button class="delete" aria-label="close"></button>
-                                        </header>
-                                        <section class="modal-card-body">
-                                            <div class="content">
-                                                <form method="POST" action="/settings/{{ new.id }}">
-
-                                                    <label class="label is-dark" style="font-size: 10px;">USERNAME</label>
-                                                    <input class="input is-light is-focused" style="width:20em;" type="text" name="editusername" value="{{ users.username }}">
-                                                    <hr>
-                                                    
-                                                    <label class="label is-dark" style="font-size: 10px;">FIRST NAME</label>
-                                                    <input class="input is-light is-focused" style="width:20em;" type="text" name="editfname" value="{{ users.fname }}">
-                                                    <hr>
-    
-                                                    <label class="label is-dark" style="font-size: 10px;">LAST NAME</label>
-                                                    <input class="input is-light is-focused" style="width:20em;" type="text" name="editlname" value="{{ users.lname }}">
-                                                    <hr>
-
-                                                    <div class="columns">
-                                                        <div class="column">
-                                                            <label class="label is-dark" style="font-size: 10px;">GENDER</label>
-                                                            <div class="select is-light">
-                                                                <select name="editgender" value="{{ users.gender }}">
-                                                                    <option> {{ users.gender }} </option>
-                                                                    <option>Male</option>
-                                                                    <option>Female</option>
-                                                                    <option>Fluid</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="column">
-                                                            <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
-                                                            <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ users.bdate }}" placeholder="{{ users.bdate }}" required>
-                                                        </div>
-                                                        <div class="column"></div>
-                                                    </div>
-                                                    <hr>
-
-                                                    <label class="label is-dark" style="font-size: 10px;">EMAIL ADDRESS</label>
-                                                    <input class="input is-light is-focused" style="width:20em;" type="text" name="editemail" value="{{ users.email }}">
-                                                    <hr>
-
-                                                    <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
-                                                    <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ users.pword }}">
-
-                                            </div>
-                                        </section>
-                                            <footer class="modal-card-foot">
-                                                <button class="button1" type="submit" name="sumbit">UPDATE</button>
-                                                </form>
-                                            </footer>
-                                    </div>
-                                </div>
-                            </div>
-                    </footer>
-                </div>
-            </div>
-            <div class="column">
-                <div class="card">
-                    <header class="card-header">
-                        <p class="card-header-title is-capitalized">
-                        About {{ users.fname }} {{ users.lname }}
-                        </p>
-                    </header>
-                    <div class="card-content">
-                        <div class="content">
-                            
-                                {{ new.description }}
-                            <hr>
-                            <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label><br>
-                            
-                                {{ new.favecam }}
-                            <hr>
-                            <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label><br>
-                                {{ new.faveroll }}
-                            <hr>
-                            <label class="label is-dark" style="font-size: 10px;">SHOOTS</label><br>
-                                {{ new.favesubject }}
-                        </div>
-                    </div>
-                    <!-- <footer class="card-footer">
-                        <a href="#" class="card-footer-item" style="color: #7A3934;">Save</a>
-                        <a href="#" class="card-footer-item" style="color: #7A3934;">Edit</a>
-                        <a href="#" class="card-footer-item" style="color: #7A3934;">Delete</a>
-                    </footer> -->
-                </div>
-            </div>
-            <div class="column is-3">
-                <div class="card">
-                    <div class="card-content">
-                        <p class="title">
-                        “There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
-                        </p>
-                        <p class="subtitle">
-                        Jeff Atwood
-                        </p>
-                    </div>
-                    <footer class="card-footer">
-                        <p class="card-footer-item">
-                        <span>
-                            View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
-                        </span>
-                        </p>
-                        <p class="card-footer-item">
-                        <span>
-                            Share on <a href="#">Facebook</a>
-                        </span>
-                        </p>
-                    </footer>
-                </div>
-            </div>
+                </footer>
             </div>
         </div>
+        <div class="column">
+            <div class="card">
+                <header class="card-header">
+                    <p class="card-header-title is-capitalized">
+                    About {{ users.fname }} {{ users.lname }}
+                    </p>
+                </header>
+                <div class="card-content">
+                    <div class="content">
+                        
+                            {{ new.description }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label><br>
+                        
+                            {{ new.favecam }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label><br>
+                            {{ new.faveroll }}
+                        <hr>
+                        <label class="label is-dark" style="font-size: 10px;">SHOOTS</label><br>
+                            {{ new.favesubject }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="column is-3">
+            <div class="card">
+                <div class="card-content">
+                    <p class="title">
+                    “There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
+                    </p>
+                    <p class="subtitle">
+                    Jeff Atwood
+                    </p>
+                </div>
+                <footer class="card-footer">
+                    <p class="card-footer-item">
+                    <span>
+                        View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
+                    </span>
+                    </p>
+                    <p class="card-footer-item">
+                    <span>
+                        Share on <a href="#">Facebook</a>
+                    </span>
+                    </p>
+                </footer>
+            </div>
+        </div>
+        </div>
     </div>
+</div>
 {% endblock %}
