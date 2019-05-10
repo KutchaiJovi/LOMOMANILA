@@ -4,6 +4,7 @@ from models import User
 from models import SignupNext
 from models import Post
 from models import Comment
+from models import ProfilePicture
 
 from routes.auth import auth
 import datetime
@@ -11,7 +12,7 @@ import os
 now = datetime.datetime.now()
 
 from werkzeug.utils import secure_filename
-UPLOAD_FOLDER = './static/img'
+UPLOAD_FOLDER = './static'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 
 app = Flask (__name__)
@@ -24,6 +25,10 @@ app.url_map.strict_slashes = False
 
 app.secret_key = 'lomomanila'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+def allowed_file(filename):
+    return '.' in filename and \
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # DATABASE #
 @app.route('/test-connection')
@@ -44,6 +49,17 @@ def create_schema():
 def profile_update(id):
 
     if 'username' in session :
+        user = User.query.filter_by(username=session['username']).first()
+        userID = user.id
+
+        avatar = ProfilePicture()
+
+        profilepic = request.files['profilePic']
+        avatar.pic_id = userID
+        filename = secure_filename(profilepic.filename)
+        profilepic.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename))
+        avatar.picpath = os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename)
+
         update = SignupNext.query.get(id) #pass id together with submit
         update.description = request.form['editDesc']
         update.favecam = request.form['editCam']
@@ -53,7 +69,7 @@ def profile_update(id):
         updateIG = User.query.get(id)
         updateIG.ig = request.form['editIG']
         
-        db.session.add(update, updateIG)
+        db.session.add(avatar, update, updateIG)
         db.session.commit()
         
         return redirect(url_for('userProfile'))
@@ -183,7 +199,12 @@ def userProfile():
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
-        return render_template('profile.html', users=user, new=new, value=1)
+        newPost = Post.query.filter_by(users_id=user.id).all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).all()
+
+        if not newPost :
+            return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+        return render_template('profile.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
 #HOMEPAGE
@@ -193,14 +214,14 @@ def home():
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.filter_by(users_id=user.id).all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).all()
+        # rep = Comment.query.filter_by(rep_id=user.id).all()
         if not newPost :
-            return render_template('home.html', users=user, new=new, value=1, newPost=0)
-        return render_template('home.html', users=user, new=new, value=1, newPost=newPost)
+            return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+        return render_template('home.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
-def allowed_file(filename):
-    return '.' in filename and \
-        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 
 @app.route('/post', methods=['POST'])
 def userPost():
@@ -218,8 +239,8 @@ def userPost():
         newPost.users_id = userID
 
         filename = secure_filename(image.filename)
-        image.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        newPost.imagepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image.save(os.path.join(app.config['UPLOAD_FOLDER']+ '/img', filename))
+        newPost.imagepath = os.path.join(app.config['UPLOAD_FOLDER']+ '/img', filename)
         
         db.session.add(newPost)
         db.session.commit()
@@ -229,6 +250,14 @@ def userPost():
 def delete_post(id):
     post = Post.query.get(id) # shortcut for Task.query.filter_by(id=1).first
     db.session.delete(post)
+    db.session.commit()
+    return redirect(url_for('home'))
+
+@app.route('/comment', methods=['POST'])
+def comment_post():
+    reply = Comment()
+    reply.comment = request.form['comment']
+    db.session.add(reply)
     db.session.commit()
     return redirect(url_for('home'))
 

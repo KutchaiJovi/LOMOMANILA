@@ -33,7 +33,7 @@ class Post(db.Model):
     postDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     del_post = db.Column(db.Boolean, nullable=False, default=False)
     imagepath = db.Column(db.Text, nullable=True)
-    
+
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
 
@@ -41,5 +41,17 @@ class Comment(db.Model):
     __tablename__ = 'comments'
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.String(500), nullable=False)
-    commentDate = db.Column(db.DateTime)
+    commentDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     del_comment = db.Column(db.Boolean, nullable=False, default=False)
+
+    rep_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    users = db.relationship('User', backref=db.backref('comments', lazy=True))
+
+class ProfilePicture(db.Model):
+    __tablename__ = 'profilepictures'
+    id = db.Column(db.Integer, primary_key=True)
+    profilepic = db.Column(db.LargeBinary)
+    picpath = db.Column(db.Text, nullable=True)
+
+    pic_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    users = db.relationship('User', backref=db.backref('profilepictures', lazy=True))

@@ -47,20 +47,20 @@
     });
 </script>
 
-<div class="container is-mobile is-centered box" style="margin: 20px 50px;">
+<div class="container is-mobile is-centered" style="margin: 20px 50px;">
     <div class="columns is-centered">
-        <div class="column is-4">
+        <div class="column is-3">
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-4by3">
-                    <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                    <img src="{{ avatar.picpath }}" alt="Placeholder image">
                     </figure>
                 </div>
                 <div class="card-content">
                     <div class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                        <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                        <img src="{{ avatar.picpath }}" alt="Placeholder image">
                         </figure>
                     </div>
                     <div class="media-content">
@@ -68,7 +68,7 @@
                             {{ users.fname }} {{ users.lname }}
                         </p></a>
                         <p class="subtitle is-6">
-                            lomomanila/{{ users.username }}
+                            /{{ users.username }}
                         </p>
                     </div>
                     </div>
@@ -91,7 +91,11 @@
                                 </header>
                                 <section class="modal-card-body">
                                     <div class="content">
-                                        <form method="POST" action="/update/{{ new.id }}">
+                                        <form method="POST" action="/update/{{ new.id }}" enctype="multipart/form-data">
+
+                                            <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
+                                            <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
+                                            <hr>
 
                                             <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
                                             <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
@@ -185,7 +189,42 @@
                 </footer>
             </div>
         </div>
-        <div class="column">
+
+        <div class="column is-6">
+            {% if newPost == 0 %}
+                <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+            {% else %}
+                {% for userPost in newPost %}
+                    
+                        <article class="media">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p class="subtitle">
+                                        {{ userPost.post }}<br>
+                                    </p>
+                                    {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
+                                    <time datetime="1-1-2016">{{ userPost.postDate }}</time>
+                                    <img src='{{ userPost.imagepath }}'><br>
+                                </div>
+                        </article>
+                    
+                {% endfor %}
+                <!-- <footer class="card-footer">
+                    <p class="card-footer-item">
+                    <span>
+                        View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
+                    </span>
+                    </p>
+                    <p class="card-footer-item">
+                    <span>
+                        Share on <a href="#">Facebook</a>
+                    </span>
+                    </p>
+                </footer> -->
+            {% endif %}
+        </div>
+
+        <div class="column is-3">
             <div class="card">
                 <header class="card-header">
                     <p class="card-header-title is-capitalized">
@@ -210,30 +249,7 @@
                 </div>
             </div>
         </div>
-        <div class="column is-3">
-            <div class="card">
-                <div class="card-content">
-                    <p class="title">
-                    “There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
-                    </p>
-                    <p class="subtitle">
-                    Jeff Atwood
-                    </p>
-                </div>
-                <footer class="card-footer">
-                    <p class="card-footer-item">
-                    <span>
-                        View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
-                    </span>
-                    </p>
-                    <p class="card-footer-item">
-                    <span>
-                        Share on <a href="#">Facebook</a>
-                    </span>
-                    </p>
-                </footer>
-            </div>
-        </div>
+        
         </div>
     </div>
 </div>
