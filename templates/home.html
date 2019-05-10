@@ -8,14 +8,14 @@
               <div class="card">
                   <div class="card-image">
                       <figure class="image is-4by3" >
-                      <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+                      <img src="{{ avatar.picpath }}" alt="Placeholder image">
                       </figure>
                   </div>
                   <div class="card-content">
                     <div class="media">
                       <div class="media-left">
                           <figure class="image is-48x48">
-                          <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+                          <img src="{{ avatar.picpath }}" alt="Placeholder image">
                           </figure>
                       </div>
                       <div class="media-content">
@@ -32,7 +32,7 @@
                   </div>
               </div>
         </div>
-        <div class="column">
+        <div class="column is-9">
                 <div class="box">
                 <article class="media">
                     <figure class="media-left">
@@ -98,12 +98,13 @@
                         <strong>{{ users.fname }} {{ users.lname }}</strong>
                         <br><br>
                         {% for userPost in newPost %}
-                          <img src='{{ userPost.imagepath }}' height="200px;"><br>
                           {{ userPost.post }}<br>
                           {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
-                          <time datetime="1-1-2016">{{ userPost.postDate }}</time>
+                          <time datetime="1-1-2016">{{ userPost.postDate }}</time><br><br>
+                          <img src='{{ userPost.imagepath }}'><br>
+                          
 
-                          <nav class="level is-mobile">
+                          <!-- <nav class="level is-mobile">
                             <div class="level-left">
                               <a class="level-item" aria-label="reply">
                                 <span class="icon is-small">
@@ -121,7 +122,22 @@
                                 </span>
                               </a>
                             </div>
-                          </nav>
+                          </nav> -->
+                          <br>
+                          <form action="/post" method="POST">
+                            <div class="control" style="margin: 20px;">
+                              <input type="text" class="input is-small" name="comment" placeholder="Reply">
+                          </div>
+                            <nav class="level is-mobile">
+                              <div class="media-right">
+                                <a class="level-item submit" type="submit"aria-label="reply">
+                                  <span class="icon is-small">
+                                    <i class="fas fa-reply" aria-hidden="true"></i>
+                                  </span>
+                                </a>
+                              </div>
+                            </nav>
+                          </form>
                           <hr>
                         {% endfor %}
                       </p>
