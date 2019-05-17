@@ -45,8 +45,9 @@ def create_schema():
     return 'Schema created.'
 
 # UPDATE #
-@app.route('/update/<id>', methods=['POST'])
-def profile_update(id):
+
+@app.route('/avatar/<id>', methods=['POST'])
+def avatar(id):
 
     if 'username' in session :
         user = User.query.filter_by(username=session['username']).first()
@@ -59,6 +60,16 @@ def profile_update(id):
         filename = secure_filename(profilepic.filename)
         profilepic.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename))
         avatar.picpath = os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename)
+        
+        db.session.add(avatar)
+        db.session.commit()
+        
+        return redirect(url_for('userProfile'))
+
+@app.route('/update/<id>', methods=['POST'])
+def profile_update(id):
+
+    if 'username' in session :
 
         update = SignupNext.query.get(id) #pass id together with submit
         update.description = request.form['editDesc']
@@ -69,7 +80,7 @@ def profile_update(id):
         updateIG = User.query.get(id)
         updateIG.ig = request.form['editIG']
         
-        db.session.add(avatar, update, updateIG)
+        db.session.add(update, updateIG)
         db.session.commit()
         
         return redirect(url_for('userProfile'))
