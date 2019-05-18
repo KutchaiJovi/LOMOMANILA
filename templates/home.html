@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% block title %} - HOME{% endblock %}
 
 {% block content %}
@@ -15,7 +15,7 @@
                     <div class="media">
                       <div class="media-left">
                           <figure class="image is-48x48">
-                          <img src="{{ avatar.picpath }}" alt="Placeholder image">
+                          <img src="{{ avatar.picpath }}" alt="Avatar">
                           </figure>
                       </div>
                       <div class="media-content">
@@ -96,11 +96,22 @@
                     <div class="content">
                       <p class="is-capitalized">
                         <strong>{{ users.fname }} {{ users.lname }}</strong>
-                        <br><br>
+                        <br>
                         {% for userPost in newPost %}
-                          {{ userPost.post }}<br>
+
+                          <div class="columns">
+                            <div class="column is-11">
+                                {{ userPost.post }}
+                            </div>
+                            <div class="column media-right">
+                                <a href="/delete_post/{{ userPost.id }}">
+                                  <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                          </div>
+                          
                           {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
-                          <time datetime="1-1-2016">{{ userPost.postDate }}</time><br><br>
+                          <time datetime="1-1-2016">{{ userPost.postDate }}</i></time><br><br>
                           <img src='{{ userPost.imagepath }}'><br>
                           
 
@@ -126,13 +137,13 @@
                           <br>
                           <form action="/post" method="POST">
                             <div class="control" style="margin: 20px;">
-                              <input type="text" class="input is-small" name="comment" placeholder="Reply">
+                              <input type="text" class="input is-small" name="comment" placeholder="Say something..">
                           </div>
                             <nav class="level is-mobile">
                               <div class="media-right">
-                                <a class="level-item submit" type="submit"aria-label="reply">
-                                  <span class="icon is-small">
-                                    <i class="fas fa-reply" aria-hidden="true"></i>
+                                <a class="level-item submit" type="submit" aria-label="reply">
+                                  <span class="icon is-small"></span>
+                                    <i class="fa fa-reply" aria-hidden=""></i>
                                   </span>
                                 </a>
                               </div>

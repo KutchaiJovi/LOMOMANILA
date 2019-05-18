@@ -262,6 +262,7 @@ def delete_post(id):
     post = Post.query.get(id) # shortcut for Task.query.filter_by(id=1).first
     db.session.delete(post)
     db.session.commit()
+    
     return redirect(url_for('home'))
 
 @app.route('/comment', methods=['POST'])

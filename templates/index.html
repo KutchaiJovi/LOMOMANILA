@@ -1,63 +1,5 @@
-<!DOCTYPE html>
-    {% block head %}
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>LOMOMANILA FORUM</title>
-    <meta name="description" content="Lomomanila. Film photography enthusiast community based in Manila, PH." />
-    <link rel="icon" type="image/svg" href="/static/img/logo-bow.svg" sizes="64x64">
-    <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    {% endblock %}
-<body>
-    <section class="hero is-fullheight">
-        <div class="hero-head">
-            <header class="navbar">
-            <div class="container">
-                <div class="navbar-brand">
-                        <script>
-                            const toggleBurger = () => {
-                                let burgerIcon = document.getElementById('navbar-burger-id');
-                                let dropMenu = document.getElementById('navbar-menu-id');
-                                burgerIcon.classList.toggle('is-active');
-                                dropMenu.classList.toggle('is-active');
-                            };
-                        </script>
-                    <a class="navbar-item" href="/">
-                        <img class="lomoLogo" src="static/lomoLogo.png" alt="Lomomanila Logo">
-                    </a>
-                    <a id="navbar-burger-id" role="button" class="navbar-burger burger is-light" data-target="navbar-menu-id" aria-label="menu" aria-expanded="false" onclick="toggleBurger()">
-                        <span area-hidden="true"></span>
-                        <span area-hidden="true"></span>
-                        <span area-hidden="true"></span>
-                    </a>
-                </div>
-                <div id="navbar-menu-id" class="navbar-menu">
-                    <div class="navbar-end">
-                        <a class="navbar-item" href="/">
-                            <span class="nav">HOME</span>
-                        </a>
-                        {% if value == 0 %}
-                        <a class="navbar-item" href="/about">
-                            <span class="nav">ABOUT</span>
-                        </a>
-                        <a class="navbar-item is-active" href="/login">
-                            <span class="nav">SIGN IN</span>
-                        </a>
-                        {% elif value == 1 %}
-                        <a class="navbar-item" href="/profile">
-                            <span class="nav">PROFILE</span>
-                        </a>
-                        <a class="navbar-item is-active" href="/logout">
-                            <span class="nav">LOG OUT</span>
-                        </a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-            </header>
-        </div>
+{% extends "base.html" %}
+{% block title %}{% endblock %}
         {% block content %}
             <div class="columns is-mobile is-centered" style="margin-top: 10px;">
                 <div class="column is-half-desktop">
@@ -83,16 +25,3 @@
                 </div>
             </div> 
         {% endblock %}
-        <div class="hero-foot">
-            <nav class="tabs is-boxed is-centered">
-            <div class="container">
-                <ul>
-                    <li><a target="_blank" href="https://www.facebook.com/groups/2408974704/"> <span class="foot"> FACEBOOK </span></a></li>
-                    <li><a target="_blank" href="https://www.lomography.com/"> <span class="foot"> LOMOGRAPHY </span></a></li>
-                </ul>
-            </div>
-            </nav>
-        </div>
-    </section>
-</body>
-</html>

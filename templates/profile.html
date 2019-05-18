@@ -1,4 +1,4 @@
-{% extends "index.html" %}
+{% extends "base.html" %}
 {% block title %}- PROFILE{% endblock %}
 
 {% block content %}
@@ -9,7 +9,7 @@
         var rootEl = document.documentElement;
         var $modals = getAll('.modal');
         var $modalButtons = getAll('.modal-button');
-        var $modalCloses = getAll('.modal-close, .delete, .modal-card-foot .button');
+        var $modalCloses = getAll('.modal-close, .delete, .modal-card-foot .button, .delete .esc');
 
         if ($modalButtons.length > 0) {
             $modalButtons.forEach(function ($el) {
@@ -53,20 +53,51 @@
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-4by3">
-                    <img src="{{ avatar.picpath }}" alt="Placeholder image">
+                    <a href="#" class="card-footer-item modal-button" data-target="modal-img" aria-haspopup="true" style="">
+                        {% if avatar == avatar %}    
+                            <img src="{{ avatar.picpath }}" alt="Update Profile Picture" class="is-4by3">
+                        {% else %}
+                            <img src="https://bulma.io/images/placeholders/256x256.png">
+                        {% endif %}
+                    </a>
                     </figure>
+
+                    <div id="modal-img" class="modal">
+                        <div class="modal-background">
+                            <div class="modal-card" style="margin-top: 150px;">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Edit Profile Picture</p>
+                                    <button class="delete esc" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="content">
+                                        <form method="POST" action="/avatar/{{ new.id }}" enctype="multipart/form-data">
+
+                                            <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
+                                            <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
+
+                                    </div>
+                                </section>
+                                    <footer class="modal-card-foot">
+                                        <button class="button1" type="submit" name="submit">UPDATE</button>
+                                        </form>
+                                    </footer>
+                                </div>
+                            </div>
+                        </div>
+
                 </div>
                 <div class="card-content">
                     <div class="media">
                     <div class="media-left">
                         <figure class="image is-48x48">
-                        <img src="{{ avatar.picpath }}" alt="Placeholder image">
+                        <img src="{{ avatar.picpath }}" alt="Avatar">
                         </figure>
                     </div>
                     <div class="media-content">
-                        <a href="profile.html"><p class="title is-4 is-capitalized">
+                        <p class="title is-4 is-capitalized">
                             {{ users.fname }} {{ users.lname }}
-                        </p></a>
+                        </p>
                         <p class="subtitle is-6">
                             /{{ users.username }}
                         </p>
@@ -92,10 +123,6 @@
                                 <section class="modal-card-body">
                                     <div class="content">
                                         <form method="POST" action="/update/{{ new.id }}" enctype="multipart/form-data">
-
-                                            <!-- <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
-                                            <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
-                                            <hr> -->
 
                                             <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
                                             <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
