@@ -23,6 +23,9 @@ class SignupNext(db.Model):
     faveroll = db.Column(db.String(100), nullable=False)
     favesubject = db.Column(db.String(200), nullable=False)
 
+    users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    users = db.relationship('User', backref=db.backref('signupNext', lazy=True))
+
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -31,7 +34,7 @@ class Post(db.Model):
     filmCam = db.Column(db.String(100))
     filmRoll = db.Column(db.String(100))
     postDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    del_post = db.Column(db.Boolean, nullable=False, default=False)
+    # del_post = db.Column(db.Boolean, nullable=False, default=False)
     imagepath = db.Column(db.Text, nullable=True)
 
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)

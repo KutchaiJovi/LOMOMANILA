@@ -60,14 +60,17 @@
         <div class="column is-3">
             <div class="card">
                 <div class="card-image">
-                    <figure class="image is-4by3">
-                    <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true" style="">
-                        {% if avatar == avatar %}    
-                            <img src="{{ avatar.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;">
+                    <figure class="image is-square">
+                        {% if avatar %}   
+                            <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true">
+                                <img src="{{ avatar.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;"> 
+                            </a>
                         {% else %}
-                            <img src="https://bulma.io/images/placeholders/256x256.png">
+                            <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img2" aria-haspopup="true">
+                                <img src="https://bulma.io/images/placeholders/256x256.png">
+                            </a> 
                         {% endif %}
-                    </a>
+                    
                     </figure>
 
                     <div id="modal-img" class="modal">
@@ -86,13 +89,37 @@
 
                                     </div>
                                 </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button1" type="submit" name="submit">UPDATE</button>
-                                        </form>
-                                    </footer>
-                                </div>
+                                <footer class="modal-card-foot">
+                                    <button class="button1" type="submit" name="submit">UPDATE</button>
+                                    </form>
+                                </footer>
                             </div>
                         </div>
+                    </div>
+
+                    <div id="modal-img2" class="modal">
+                        <div class="modal-background">
+                            <div class="modal-card" style="margin-top: 150px;">
+                                <header class="modal-card-head">
+                                    <p class="modal-card-title">Update Profile Picture</p>
+                                    <button class="delete esc" aria-label="close"></button>
+                                </header>
+                                <section class="modal-card-body">
+                                    <div class="content">
+                                        <form method="POST" action="/avatar" enctype="multipart/form-data">
+
+                                            <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
+                                            <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
+
+                                    </div>
+                                </section>
+                                <footer class="modal-card-foot">
+                                    <button class="button1" type="submit" name="submit">UPDATE</button>
+                                    </form>
+                                </footer>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="card-content">

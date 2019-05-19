@@ -2,7 +2,6 @@ from flask import Flask, Blueprint, render_template, request, session, redirect,
 from models import db, User, SignupNext, Post, Comment, ProfilePicture
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
-# from lib.validators.signup_validator import signupValidator
 from datetime import datetime
 
 auth = Blueprint('auth', __name__)
@@ -52,11 +51,17 @@ def before_request():
 # LOG IN #
 @auth.route('/login')
 def login():
-    # if 'username' in session:
-    #     return render_template('home.html', logged=True)
-    if current_user.is_authenticated:
-        flash('You are already Signed In.')
-        return redirect(url_for('userProfile')) 
+    if 'username' in session:
+        user = User.query.filter_by(username=session['username']).first()
+        new = SignupNext.query.filter_by(id=user.id).first()
+        newPost = Post.query.all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
+        # rep = Comment.query.filter_by(rep_id=user.id).all()
+        
+        return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost, avatar=avatar)
+    # if current_user.is_authenticated:
+    #     flash('You are already Signed In.')
+    #     return redirect(url_for('userProfile')) 
     return render_template('login.html')
 
 @auth.route('/login', methods=['POST'])
@@ -67,8 +72,9 @@ def loginForm():
         password = request.form['password']
         # remember = True if request.form.get('remember') else False
 
-        user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
-        if not user :
+        # user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
+        user = User.query.filter_by(username=session['username']).first() #filter results ; .all() -return all tasks
+        if not user or not check_password_hash(user.pword, password):
             session.clear()
             return render_template('login.html', test=2, value=0)
         # login_user(user, remember=remember)
@@ -129,12 +135,16 @@ def signUp():
 @auth.route('/signup-next', methods=['POST'])
 def signUpNext():
     if 'username' in session:
+        user = User.query.filter_by(username=session['username']).first()
+        userID = user.id
+
         new = SignupNext()
 
         new.description = request.form['description']
         new.favecam = request.form['favecam']
         new.faveroll = request.form['faveroll']
         new.favesubject = request.form['favesubject']
+        new.users_id = userID
 
         db.session.add(new)
         db.session.commit()

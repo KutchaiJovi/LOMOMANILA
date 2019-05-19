@@ -1,7 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
 from models import db, User, SignupNext, Post, Comment, ProfilePicture
 from flask_login import LoginManager, login_required, current_user
-from PIL import Image
 
 from routes.auth import auth
 import datetime
@@ -59,16 +58,26 @@ def allowed_file(filename):
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # UPDATE #
+@app.route('/avatar', methods=['POST'])
+def newAvatar():
 
-# image_input = Image.open("flowers.jpg")  # image name jpeg
-# height = 400  # define height size of cropping image
-# width = 400   # define width size of cropping image
-# img_height, img_width = (1200, 1200)
-# for i in range(0, img_height, height):  # 0,1200,400
-#     for j in range(0, img_width, width):  # 0,1200,400
-#         box = (j, i, j + width, i + height)
-#         cropped_img = image_input.crop(box)
-#         cropped_img.show()
+    if 'username' in session :
+        user = User.query.filter_by(username=session['username']).first()
+        userID = user.id
+
+        avatar = ProfilePicture()
+
+        avatar.pic_id = userID
+        profilepic = request.files['profilePic']
+        filename = secure_filename(profilepic.filename)
+        profilepic.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename))
+        avatar.picpath = os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename)
+
+        avatar.picpath = avatar.picpath
+        db.session.add(avatar)
+        db.session.commit()
+        return redirect(url_for('userProfile'))
+    abort(404)
 
 @app.route('/avatar/<id>', methods=['POST'])
 def avatar(id):
@@ -76,20 +85,18 @@ def avatar(id):
     if 'username' in session :
         user = User.query.filter_by(username=session['username']).first()
         userID = user.id
-
-        avatar = ProfilePicture.query.get(id)
         
-        profilepic = request.files['profilePic']
+        avatar = ProfilePicture.query.get(id)
+
         avatar.pic_id = userID
+        profilepic = request.files['profilePic']
         filename = secure_filename(profilepic.filename)
         profilepic.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename))
         avatar.picpath = os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename)
 
         avatar.picpath = avatar.picpath
-        
         db.session.add(avatar)
         db.session.commit()
-        
         return redirect(url_for('userProfile'))
     abort(404)
 
@@ -99,6 +106,7 @@ def profile_update(id):
     if 'username' in session :
 
         update = SignupNext.query.get(id) #pass id together with submit
+
         update.description = request.form['editDesc']
         update.favecam = request.form['editCam']
         update.faveroll = request.form['editRoll']
