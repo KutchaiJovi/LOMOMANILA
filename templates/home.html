@@ -3,6 +3,51 @@
 
 {% block content %}
 
+<script>
+    'use strict';
+        document.addEventListener('DOMContentLoaded', function () {
+        // Modals
+        var rootEl = document.documentElement;
+        var $modals = getAll('.modal');
+        var $modalButtons = getAll('.modal-button');
+        var $modalCloses = getAll('.modal-close, .delete, .modal-card-foot .button, .delete .esc');
+
+        if ($modalButtons.length > 0) {
+            $modalButtons.forEach(function ($el) {
+            $el.addEventListener('click', function () {
+                var target = $el.dataset.target;
+                var $target = document.getElementById(target);
+                rootEl.classList.add('is-clipped');
+                $target.classList.add('is-active');
+            });
+            });
+        }
+        if ($modalCloses.length > 0) {
+            $modalCloses.forEach(function ($el) {
+            $el.addEventListener('click', function () {
+                closeModals();
+            });
+            });
+        }
+        document.addEventListener('keydown', function (event) {
+            var e = event || window.event;
+            if (e.keyCode === 27) {
+            closeModals();
+            }
+        });
+        function closeModals() {
+            rootEl.classList.remove('is-clipped');
+            $modals.forEach(function ($el) {
+            $el.classList.remove('is-active');
+            });
+        }
+        // Functions
+        function getAll(selector) {
+            return Array.prototype.slice.call(document.querySelectorAll(selector), 0);
+        }
+    });
+</script>
+
 <div class="container is-mobile is-centered" style="margin: 50px;">
     {% if logged == True %}
     <div class="notification is-warning">
@@ -116,13 +161,25 @@
                         <strong>{{ userPost.users.fname }} {{ userPost.users.lname }}</strong>
                         <br>
                         
-                        <p class="subtitle">
-                                {{ userPost.post }}<br>
-                            </p>
+                          <p class="subtitle">
+                            {{ userPost.post }}<br>
+                          </p>
                             
                           {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
                           <time datetime="1-1-2016">{{ userPost.postDate }}</i></time><br><br>
-                          <img src='{{ userPost.imagepath }}'><br>
+                            <a class="is-primary is-large modal-button" data-target="{{ userPost.id }}">
+                              <img src='{{ userPost.imagepath }}' style="max-height: 300px; width: auto;">
+                            </a><br>
+
+                            <div id="{{ userPost.id }}" class="modal">
+                              <div class="modal-background"></div>
+                              <div class="modal-content">
+                                <p class="image">
+                                  <img src="{{ userPost.imagepath }}" alt="{{ userPost.post }}">
+                                </p>
+                              </div>
+                              <button class="modal-close is-large" aria-label="close"></button>
+                            </div>
                           
                           <br>
                           <div class="columns">
