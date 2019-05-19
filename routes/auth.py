@@ -43,6 +43,12 @@ def create_schema():
     db.create_all()
     return 'Schema created.'
 
+@auth.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
+
 # LOG IN #
 @auth.route('/login')
 def login():
@@ -69,11 +75,7 @@ def loginForm():
         return redirect(url_for('home'))
     return render_template('login.html', value=0)
 
-@auth.before_request
-def before_request():
-    if current_user.is_authenticated:
-        current_user.last_seen = datetime.utcnow()
-        db.session.commit()
+
 
 # LOG OUT #
 @auth.route('/logout')

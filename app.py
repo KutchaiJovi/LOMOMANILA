@@ -77,8 +77,8 @@ def avatar(id):
         user = User.query.filter_by(username=session['username']).first()
         userID = user.id
 
-        avatar = ProfilePicture()
-
+        avatar = ProfilePicture.query.get(id)
+        
         profilepic = request.files['profilePic']
         avatar.pic_id = userID
         filename = secure_filename(profilepic.filename)
@@ -167,6 +167,11 @@ def resetpassword():
         return render_template('resetPassword.html', value=0, test=3)
 
 # PROFILE PAGE #
+@app.route('/profile/<id>', methods=['POST'])
+def otherProfile(id):
+    # profile = User.query.get(id)
+    return render_template('profile.html')
+
 @app.route('/profile')
 def userProfile():
     if 'username' in session:
@@ -215,6 +220,9 @@ def userPost():
         newPost.filmRoll = request.form['film']
         newPost.postDate = now.strftime("%Y-%m-%d %H:%M")
         newPost.users_id = userID
+
+        avatarID = ProfilePicture.query.filter_by(pic_id=userID).first()
+        newPost.avatar_id = avatarID.id
 
         filename = secure_filename(image.filename)
         image.save(os.path.join(app.config['UPLOAD_FOLDER']+ '/img', filename))

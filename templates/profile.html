@@ -79,7 +79,7 @@
                                 </header>
                                 <section class="modal-card-body">
                                     <div class="content">
-                                        <form method="POST" action="/avatar/{{ new.id }}" enctype="multipart/form-data">
+                                        <form method="POST" action="/avatar/{{ avatar.id }}" enctype="multipart/form-data">
 
                                             <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
                                             <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
@@ -222,7 +222,7 @@
 
         <div class="column is-6">
             {% if newPost == 0 %}
-            <div class="notification is-info">
+            <div class="notification is-warning">
                 <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
             </div>
             {% else %}

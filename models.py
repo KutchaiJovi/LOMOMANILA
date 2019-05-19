@@ -23,10 +23,6 @@ class SignupNext(db.Model):
     faveroll = db.Column(db.String(100), nullable=False)
     favesubject = db.Column(db.String(200), nullable=False)
 
-# post_pic = db.table('post_pic', 
-#     db.Column('pic_id', db.Integer, db.ForeignKey('profilepictures.id'), primary_key=True), 
-#     db.Column('post_id', db.Integer, db.ForeignKey('posts.id'), primary_key=True))
-
 class Post(db.Model):
     __tablename__ = 'posts'
     id = db.Column(db.Integer, primary_key=True)
@@ -39,7 +35,9 @@ class Post(db.Model):
     imagepath = db.Column(db.Text, nullable=True)
 
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    avatar_id = db.Column(db.Integer, db.ForeignKey('profilepictures.id'), nullable=False) 
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
+    pic = db.relationship('ProfilePicture', backref=db.backref('posts', lazy=True))
 
 class ProfilePicture(db.Model):
     __tablename__ = 'profilepictures'
@@ -48,7 +46,6 @@ class ProfilePicture(db.Model):
     picpath = db.Column(db.Text, nullable=True)
 
     pic_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    # post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
     users = db.relationship('User', backref=db.backref('profilepictures', lazy=True))
 
 class Comment(db.Model):
