@@ -2,22 +2,31 @@
 {% block title %} - HOME{% endblock %}
 
 {% block content %}
+
+<!-- {% with messages = get_flashed_messages() %} -->
+  {% if logged == True %}
+      <div class="notification is-warning">
+          You are already logged in.
+      </div>
+  {% endif %}
+<!-- {% endwith %} -->
+
 <div class="container is-mobile is-centered" style="margin: 50px;">
     <div class="columns is-centered">
         <div class="column is-3">
               <div class="card">
                   <div class="card-image">
                       <figure class="image is-4by3" >
-                      <img src="https://bulma.io/images/placeholders/128x128.png" alt="Placeholder image">
+                        {% if avatar == avatar %}    
+                          <img src="{{ avatar.picpath }}" alt="Update Profile Picture" style="height: 200px; width: auto;">
+                        {% else %}
+                          <img src="https://bulma.io/images/placeholders/256x256.png">
+                        {% endif %}
                       </figure>
                   </div>
                   <div class="card-content">
                     <div class="media">
-                      <div class="media-left">
-                          <figure class="image is-48x48">
-                          <img src="{{ avatar.picpath }}" alt="Avatar">
-                          </figure>
-                      </div>
+                    
                       <div class="media-content">
                           <a href="/profile"><p class="title is-4 is-capitalized">{{ users.fname }} {{ users.lname }}</p></a>
                           <p class="subtitle is-6">/{{ users.username }}</p>
@@ -32,14 +41,18 @@
                   </div>
               </div>
         </div>
-        <div class="column is-9">
+        <div class="column is-8">
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                  <div class="notification is-info">
+                      {{ messages[0] }}
+                  </div>
+              {% endif %}
+            {% endwith %}
+
                 <div class="box">
                 <article class="media">
-                    <figure class="media-left">
-                        <p class="image is-64x64">
-                        <img src="https://bulma.io/images/placeholders/128x128.png">
-                        </p>
-                    </figure>
+                    
                     <div class="media-content">
                         <div class="field">
                         <form action="/post" method="POST" enctype="multipart/form-data">
@@ -81,82 +94,75 @@
                 </article>
               </div>
               {% if newPost == 0 %}
-                  <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+                <div class="is-info">
+                    <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+                </div>
               {% else %}
+                
+                {% for userPost in newPost %}
               <div class="box">
+                  
                 <article class="media">
                   <figure class="media-left">
                     <p class="image is-64x64">
-                      <img src="https://bulma.io/images/placeholders/128x128.png">
+                      {% if avatar == avatar %}    
+                        <img src="{{ avatar.picpath }}" alt="Update Profile Picture" class="is-4by3">
+                      {% else %}
+                        <img src="https://bulma.io/images/placeholders/256x256.png">
+                      {% endif %}
                     </p>
                   </figure>
-
                   
                   <div class="media-content">
                     <div class="content">
                       <p class="is-capitalized">
-                        <strong>{{ users.fname }} {{ users.lname }}</strong>
-                        <br>
-                        {% for userPost in newPost %}
-
-                          <div class="columns">
-                            <div class="column is-11">
-                                {{ userPost.post }}
-                            </div>
-                            <div class="column media-right">
-                                <a href="/delete_post/{{ userPost.id }}">
-                                  <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                          </div>
-                          
+                        <strong>{{ userPost.users.fname }} {{ userPost.users.lname }}</strong>
+                        <br><br>
+                        
+                        <p class="subtitle">
+                                {{ userPost.post }}<br>
+                            </p>
+                            
                           {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
                           <time datetime="1-1-2016">{{ userPost.postDate }}</i></time><br><br>
                           <img src='{{ userPost.imagepath }}'><br>
                           
-
-                          <!-- <nav class="level is-mobile">
-                            <div class="level-left">
-                              <a class="level-item" aria-label="reply">
-                                <span class="icon is-small">
-                                  <i class="fas fa-reply" aria-hidden="true"></i>
-                                </span>
-                              </a>
-                              <a class="level-item" aria-label="retweet">
-                                <span class="icon is-small">
-                                  <i class="fas fa-retweet" aria-hidden="true"></i>
-                                </span>
-                              </a>
-                              <a class="level-item" aria-label="like">
-                                <span class="icon is-small">
-                                  <i class="fas fa-heart" aria-hidden="true"></i>
-                                </span>
-                              </a>
-                            </div>
-                          </nav> -->
                           <br>
                           <form action="/post" method="POST">
                             <div class="control" style="margin: 20px;">
                               <input type="text" class="input is-small" name="comment" placeholder="Say something..">
                           </div>
                             <nav class="level is-mobile">
-                              <div class="media-right">
-                                <a class="level-item submit" type="submit" aria-label="reply">
-                                  <span class="icon is-small"></span>
-                                    <i class="fa fa-reply" aria-hidden=""></i>
-                                  </span>
-                                </a>
+                              <div class="columns">
+                                  <div class="column media-right">
+                                      <a class="level-item submit" type="submit" aria-label="reply">
+                                          <span class="icon is-small">
+                                            <i class="fa fa-reply" aria-hidden="true"></i>
+                                          </span>
+                                        </a>
+                                  </div>
+                                  <div class="column media-left">
+                                    <a class="level-item" aria-label="like">
+                                      <span class="icon is-small">
+                                        <i class="fa fa-heart" aria-hidden="true"></i>
+                                      </span>
+                                    </a>
+                                  </div>
                               </div>
+                              
                             </nav>
                           </form>
-                          <hr>
-                        {% endfor %}
+
+                        </div>
+                      </div>
                       </p>
-                    </div>
-                  </div>
-                  
                 </article>
+                
               </div>
+              {% endfor %}
+            </div>
+              </div>
+              
               {% endif %}
               </div>
         </div>

@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>LOMOMANILA FORUM</title>
     <meta name="description" content="Lomomanila. Film photography enthusiast community based in Manila, PH." />
-    <link rel="icon" type="image/svg" href="/static/img/logo-bow.svg" sizes="64x64">
+    <link rel="icon" type="image/svg" href="LOMOMANILA/static/film-solid.svg" sizes="64x64">
     <link rel="stylesheet" href="{{url_for('static', filename='style.css')}}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -25,7 +25,7 @@
                             };
                         </script>
                     <a class="navbar-item" href="/">
-                        <img class="lomoLogo" src="static/lomoLogo.png" alt="Lomomanila Logo">
+                        <img class="lomoLogo" src="{{url_for('static', filename='lomoLogo.png')}}" alt="Lomomanila Logo">
                     </a>
                     <a id="navbar-burger-id" role="button" class="navbar-burger burger is-light" data-target="navbar-menu-id" aria-label="menu" aria-expanded="false" onclick="toggleBurger()">
                         <span area-hidden="true"></span>

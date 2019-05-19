@@ -121,6 +121,10 @@ a.image1>img:hover{
     display: inline-block;
     cursor: pointer;
 }
+
+/* a.avatar:hover{
+
+} */
 @media only screen and (max-width: 768px){
     #errorText{
         margin: 0;

@@ -22,7 +22,10 @@
                             {% if test == 2 %}
                                 <p class="help is-light" style="padding-top: 10px;">Something went wrong. Kindly check <br>your username and password.<br><br>
                                 <a href="/reset" class="modal-button" data-target="modal-ter" aria-haspopup="true">Forgot password?</a></p>
-
+                            {% elif error == True %}
+                                <div class="notification is-danger">
+                                    <p class="is-light">Please login to access this page.</p>
+                                </div>
                             {% endif %}
 
                             <div class="control">  

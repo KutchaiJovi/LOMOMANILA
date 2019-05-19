@@ -1,10 +1,7 @@
-from flask import Flask, render_template, request, session, redirect, url_for, make_response, flash, abort
-from models import db
-from models import User
-from models import SignupNext
-from models import Post
-from models import Comment
-from models import ProfilePicture
+from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
+from models import db, User, SignupNext, Post, Comment, ProfilePicture
+from flask_login import LoginManager, login_required, current_user
+from PIL import Image
 
 from routes.auth import auth
 import datetime
@@ -26,25 +23,52 @@ app.url_map.strict_slashes = False
 app.secret_key = 'lomomanila'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# EMAIL #
+from flask_mail import Mail, Message
+
+app.config.update(
+    DEBUG=True,
+    #Email Settings
+    MAIL_SERVER = 'smtp.gmail.com',
+    MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = '201601140@iacademy.edu.ph',
+	MAIL_PASSWORD = '272829turkey'
+    )
+
+# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+# app.config['MAIL_PORT'] = 587
+# app.config['MAIL_USE_TLS'] = True
+# app.config['MAIL_USERNAME'] = 'LOMOMANILA'
+# app.config['MAIL_PASSWORD'] = 'password'
+# app.config['MAIL_DEFAULT_SENDER'] = '201601140@iacademy.edu.ph'
+mail = Mail(app)
+
+# LOG IN MANAGER #
+login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+login_manager.init_app(app)
+
+#Creates cookie and searches it in db from id
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# DATABASE #
-@app.route('/test-connection')
-def hello():
-    try:
-        db.session.query('1').all()
-        return 'Connected.'
-    except Exception as e:
-        return str(e)
-
-@app.route('/create-schema')
-def create_schema():
-    db.create_all()
-    return 'Schema created.'
-
 # UPDATE #
+
+# image_input = Image.open("flowers.jpg")  # image name jpeg
+# height = 400  # define height size of cropping image
+# width = 400   # define width size of cropping image
+# img_height, img_width = (1200, 1200)
+# for i in range(0, img_height, height):  # 0,1200,400
+#     for j in range(0, img_width, width):  # 0,1200,400
+#         box = (j, i, j + width, i + height)
+#         cropped_img = image_input.crop(box)
+#         cropped_img.show()
 
 @app.route('/avatar/<id>', methods=['POST'])
 def avatar(id):
@@ -60,11 +84,14 @@ def avatar(id):
         filename = secure_filename(profilepic.filename)
         profilepic.save(os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename))
         avatar.picpath = os.path.join(app.config['UPLOAD_FOLDER'] + '/pic', filename)
+
+        avatar.picpath = avatar.picpath
         
         db.session.add(avatar)
         db.session.commit()
         
         return redirect(url_for('userProfile'))
+    abort(404)
 
 @app.route('/update/<id>', methods=['POST'])
 def profile_update(id):
@@ -84,6 +111,7 @@ def profile_update(id):
         db.session.commit()
         
         return redirect(url_for('userProfile'))
+    abort(404)
 
 @app.route('/settings/<id>', methods=['POST'])
 def settings(id):
@@ -101,6 +129,7 @@ def settings(id):
         db.session.commit()
 
         return redirect(url_for('home'))
+    abort(404)
 
 # STATIC PAGES #
 @app.route('/')
@@ -114,21 +143,7 @@ def index():
 def about():
     return render_template('about.html', value=0)
 
-@app.route('/login', methods=['POST', 'GET'])
-def loginForm():
-
-    if request.method == 'GET' :
-        return render_template('login.html', value=0)
-    elif request.method == 'POST' :
-        session['username'] = request.form['username']
-        password = request.form['password']
-        user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
-        if not user:
-            session.clear()
-            return render_template('login.html', test=2, value=0)
-        return redirect(url_for('home'))
-    return render_template('login.html', value=0)
-
+# PASSWORD #
 @app.route('/reset')
 def reset():
     return render_template('resetPassword.html', value=0)
@@ -148,92 +163,44 @@ def resetpassword():
 
                 db.session.add(update)
                 db.session.commit()
-                return redirect(url_for('loginForm'))
+                return redirect(url_for('auth.loginForm'))
         return render_template('resetPassword.html', value=0, test=3)
 
-@app.route('/logout')
-def logout():
-    session.pop('username', None)
-    return redirect(url_for('index'))
-
-@app.route('/lomoOn')
-def lomoOn():
-    return render_template('signup.html', value=0)
-
-@app.route('/signup', methods=['POST'])
-def signUp():
-
-    if request.method == 'POST' :
-        users = User()
-        newUser = request.form['username']
-        checkUser = User.query.filter_by(username=newUser).first()
-        if not checkUser:
-            users.username = newUser
-            users.fname = request.form['firstName']
-            users.lname = request.form['lastName']
-            users.gender = request.form['gender']
-            users.bdate = request.form['bdate']
-            users.ig = request.form['igUsername']
-            users.email = request.form['email']
-
-            session['username'] = users.username
-            password = request.form['password']
-            users.pword = password
-            confPassword = request.form['confPassword']
-
-            if password != confPassword :
-                return render_template('signup.html', test=2, value=0)
-            else :
-                db.session.add(users)
-                db.session.commit()
-                return render_template('signup.html', value=1, sign=1)
-        return render_template('signup.html', value=0, check=1 , sign=0)
-    return redirect(url_for('lomoOn'))
-
-@app.route('/signup-next', methods=['POST'])
-def signUpNext():
-
-    new = SignupNext()
-
-    new.description = request.form['description']
-    new.favecam = request.form['favecam']
-    new.faveroll = request.form['faveroll']
-    new.favesubject = request.form['favesubject']
-
-    db.session.add(new)
-    db.session.commit()
-    return redirect(url_for('userProfile'))
-
-#PROFILE PAGE
+# PROFILE PAGE #
 @app.route('/profile')
 def userProfile():
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.filter_by(users_id=user.id).all()
-        avatar = ProfilePicture.query.filter_by(pic_id=user.id).all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
 
         if not newPost :
-            return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+            if not avatar :
+                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=0)
+            else :
+                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
         return render_template('profile.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
-#HOMEPAGE
+# HOMEPAGE #
 @app.route('/dashboard')
 def home():
     if 'username' in session :
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
-        newPost = Post.query.filter_by(users_id=user.id).all()
-        avatar = ProfilePicture.query.filter_by(pic_id=user.id).all()
+        newPost = Post.query.all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
         # rep = Comment.query.filter_by(rep_id=user.id).all()
         if not newPost :
-            return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+            if not avatar :
+                return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=0)
+            else :
+                return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
         return render_template('home.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
-
-
+# POSTS #
 @app.route('/post', methods=['POST'])
 def userPost():
     if 'username' in session and 'lomoPhoto' in request.files :
@@ -255,30 +222,37 @@ def userPost():
         
         db.session.add(newPost)
         db.session.commit()
+
+        flash('Your post is now live!')
         return redirect(url_for('home'))
+    abort(404)
 
 @app.route('/delete_post/<id>')
 def delete_post(id):
-    post = Post.query.get(id) # shortcut for Task.query.filter_by(id=1).first
-    db.session.delete(post)
-    db.session.commit()
-    
-    return redirect(url_for('home'))
+    if 'username' in session:
+        post = Post.query.get(id)
+        db.session.delete(post)
+        db.session.commit()
+        
+        return redirect(url_for('userProfile'))
+    abort(404)
 
 @app.route('/comment', methods=['POST'])
 def comment_post():
-    reply = Comment()
-    reply.comment = request.form['comment']
-    db.session.add(reply)
-    db.session.commit()
-    return redirect(url_for('home'))
+    if 'username' in session:
+        reply = Comment()
+        reply.comment = request.form['comment']
+        db.session.add(reply)
+        db.session.commit()
+        return redirect(url_for('home'))
+    abort(404)
 
 #ERROR PAGE
 @app.errorhandler(404)
 def page_not_found(error):
     if 'username' in session:
         return render_template('error.html', value=1), 404
-    return render_template('error.html', value=0), 404
+    return render_template('login.html', value=0, error=True), 404
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug=True)

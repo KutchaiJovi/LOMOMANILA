@@ -47,15 +47,23 @@
     });
 </script>
 
+<!-- {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="notification is-danger">
+            {{ messages[0] }}
+        </div>
+    {% endif %}
+{% endwith %} -->
+
 <div class="container is-mobile is-centered" style="margin: 20px 50px;">
     <div class="columns is-centered">
         <div class="column is-3">
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-4by3">
-                    <a href="#" class="card-footer-item modal-button" data-target="modal-img" aria-haspopup="true" style="">
+                    <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true" style="">
                         {% if avatar == avatar %}    
-                            <img src="{{ avatar.picpath }}" alt="Update Profile Picture" class="is-4by3">
+                            <img src="{{ avatar.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;">
                         {% else %}
                             <img src="https://bulma.io/images/placeholders/256x256.png">
                         {% endif %}
@@ -66,7 +74,7 @@
                         <div class="modal-background">
                             <div class="modal-card" style="margin-top: 150px;">
                                 <header class="modal-card-head">
-                                    <p class="modal-card-title">Edit Profile Picture</p>
+                                    <p class="modal-card-title">Update Profile Picture</p>
                                     <button class="delete esc" aria-label="close"></button>
                                 </header>
                                 <section class="modal-card-body">
@@ -89,19 +97,14 @@
                 </div>
                 <div class="card-content">
                     <div class="media">
-                    <div class="media-left">
-                        <figure class="image is-48x48">
-                        <img src="{{ avatar.picpath }}" alt="Avatar">
-                        </figure>
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-4 is-capitalized">
-                            {{ users.fname }} {{ users.lname }}
-                        </p>
-                        <p class="subtitle is-6">
-                            /{{ users.username }}
-                        </p>
-                    </div>
+                        <div class="media-content">
+                            <p class="title is-4 is-capitalized">
+                                {{ users.fname }} {{ users.lname }}
+                            </p>
+                            <p class="subtitle is-6">
+                                /{{ users.username }}
+                            </p>
+                        </div>
                     </div>
                 
                     <div class="content">
@@ -219,16 +222,29 @@
 
         <div class="column is-6">
             {% if newPost == 0 %}
+            <div class="notification is-info">
                 <p class="subtitle" style="color: white;">No posts yet. Post one now!</p>
+            </div>
             {% else %}
                 {% for userPost in newPost %}
                     
                         <article class="media">
                             <div class="card">
                                 <div class="card-content">
-                                    <p class="subtitle">
-                                        {{ userPost.post }}<br>
-                                    </p>
+
+                                    <div class="columns">
+                                        <div class="column is-11">
+                                            <p class="subtitle">
+                                                {{ userPost.post }}<br>
+                                            </p>
+                                        </div>
+                                        <div class="column media-right">
+                                            <a href="/delete_post/{{ userPost.id }}">
+                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    
                                     {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
                                     <time datetime="1-1-2016">{{ userPost.postDate }}</time>
                                     <img src='{{ userPost.imagepath }}'><br>
@@ -236,18 +252,6 @@
                         </article>
                     
                 {% endfor %}
-                <!-- <footer class="card-footer">
-                    <p class="card-footer-item">
-                    <span>
-                        View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
-                    </span>
-                    </p>
-                    <p class="card-footer-item">
-                    <span>
-                        Share on <a href="#">Facebook</a>
-                    </span>
-                    </p>
-                </footer> -->
             {% endif %}
         </div>
 
