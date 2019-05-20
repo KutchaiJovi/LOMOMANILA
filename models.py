@@ -39,8 +39,10 @@ class Post(db.Model):
 
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     avatar_id = db.Column(db.Integer, db.ForeignKey('profilepictures.id'), nullable=False) 
+    
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
     pic = db.relationship('ProfilePicture', backref=db.backref('posts', lazy=True))
+    # comments = db.relationship('Comment', backref=db.backref('posts', lazy=True))
 
 class ProfilePicture(db.Model):
     __tablename__ = 'profilepictures'
@@ -58,5 +60,7 @@ class Comment(db.Model):
     commentDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     del_comment = db.Column(db.Boolean, nullable=False, default=False)
 
-    rep_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    users = db.relationship('User', backref=db.backref('comments', lazy=True))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    user = db.relationship('User', backref=db.backref('comments', lazy=True))
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+    post = db.relationship('Post', backref=db.backref('comments', lazy=True))

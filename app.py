@@ -175,10 +175,14 @@ def resetpassword():
         return render_template('resetPassword.html', value=0, test=3)
 
 # PROFILE PAGE #
-@app.route('/profile/<id>', methods=['POST'])
+@app.route('/profile/<id>', methods=['GET'])
 def otherProfile(id):
-    # profile = User.query.get(id)
-    return render_template('profile.html')
+    user = User.query.get(id)
+    # user = User.query.filter_by(username=session['username']).first()
+    new = SignupNext.query.filter_by(id=user.id).first()
+    newPost = Post.query.filter_by(users_id=user.id).all()
+    avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
+    return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=0 )
 
 @app.route('/profile')
 def userProfile():
@@ -204,7 +208,12 @@ def home():
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.all()
         avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
-        # rep = Comment.query.filter_by(rep_id=user.id).all()
+        # rep = Comment.query.filter_by(posts_id=newPost.id).all()
+        # comments = []
+        # for post in newPost:
+            # comments = Comment.query.filter_by(post_id=post.id).all()
+            # post['comments'] = comments
+            # comments[post.id] = comments
         if not newPost :
             if not avatar :
                 return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=0)
@@ -253,15 +262,27 @@ def delete_post(id):
         return redirect(url_for('userProfile'))
     abort(404)
 
-@app.route('/comment', methods=['POST'])
-def comment_post():
+@app.route('/comment/<id>', methods=['POST'])
+def comment_post(id):
     if 'username' in session:
-        reply = Comment()
-        reply.comment = request.form['comment']
-        db.session.add(reply)
-        db.session.commit()
-        return redirect(url_for('home'))
+        user = User.query.filter_by(username=session['username']).first()
+        userID = user.id
+        
+        users_post = Post.query.filter_by(users_id=id).first()
+        if users_post :
+
+            reply = Comment()
+            
+            reply.comment = request.form['comment']
+            reply.user_id = userID
+            reply.post_id = request.form['postID']
+
+            db.session.add(reply)
+            db.session.commit()
+            return redirect(url_for('home'))
     abort(404)
+
+
 
 #ERROR PAGE
 @app.errorhandler(404)

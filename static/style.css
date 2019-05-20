@@ -11,11 +11,13 @@
 
 
 body {
-    background-image: url('lomoBG.jpg');
+    background-image: url(lomoBG.jpg);
+    background-repeat: no-repeat;
     background-size: cover;
-    background-position: bottom;
+    background-position: center center;
     min-height: 100vh;
     min-width: 100vw;
+    background-attachment: fixed;
 }
 
 .navbar-brand{
