@@ -62,7 +62,7 @@ def login():
     # if current_user.is_authenticated:
     #     flash('You are already Signed In.')
     #     return redirect(url_for('userProfile')) 
-    return render_template('login.html')
+    return render_template('login.html', value=0)
 
 @auth.route('/login', methods=['POST'])
 def loginForm():

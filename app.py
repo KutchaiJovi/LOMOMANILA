@@ -177,12 +177,19 @@ def resetpassword():
 # PROFILE PAGE #
 @app.route('/profile/<id>', methods=['GET'])
 def otherProfile(id):
-    user = User.query.get(id)
-    # user = User.query.filter_by(username=session['username']).first()
-    new = SignupNext.query.filter_by(id=user.id).first()
-    newPost = Post.query.filter_by(users_id=user.id).all()
-    avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
-    return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=0 )
+    if 'username' in session:
+        user = User.query.get(id)
+        # user = User.query.filter_by(username=session['username']).first()
+        new = SignupNext.query.filter_by(id=user.id).first()
+        newPost = Post.query.filter_by(users_id=user.id).all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
+        if not newPost :
+            if not avatar :
+                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=0)
+            else :
+                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+        return render_template('profile.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
+    abort(404)
 
 @app.route('/profile')
 def userProfile():
