@@ -196,8 +196,16 @@
                                     </p>
                                 </div>
                                 <div class="column">
-                                  <br>{{ comment.comment }}<br><small>{{ comment.commentDate }}</small>
+                                    <br>{{ comment.comment }}<br><small>{{ comment.commentDate }}</small>
                                 </div>
+                                
+                                {% if users.id == comment.user_id %}
+                                  <div class="column media-right is-2"><br>
+                                      <a href="/delete_comment/{{ users.user_comment.id }}">
+                                          <i class="fa fa-trash" aria-hidden="true" ></i>
+                                      </a>
+                                  </div>
+                                {% endif %}
                               </div>
                             {% endfor %}
 

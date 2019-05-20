@@ -37,7 +37,6 @@ class Post(db.Model):
     filmCam = db.Column(db.String(100))
     filmRoll = db.Column(db.String(100))
     postDate = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    # del_post = db.Column(db.Boolean, nullable=False, default=False)
     imagepath = db.Column(db.Text, nullable=True)
 
     users_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
@@ -45,6 +44,7 @@ class Post(db.Model):
     
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
     pic = db.relationship('ProfilePicture', backref=db.backref('posts', lazy=True))
+    # rep = db.relationship('Comment', backref=db.backref('posts', lazy=True))
 
 class ProfilePicture(db.Model):
     __tablename__ = 'profilepictures'

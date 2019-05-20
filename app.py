@@ -66,7 +66,6 @@ def newAvatar():
         userID = user.id
 
         avatar = ProfilePicture()
-
         avatar.pic_id = userID
         profilepic = request.files['profilePic']
         filename = secure_filename(profilepic.filename)
@@ -268,13 +267,23 @@ def delete_post(id):
         return redirect(url_for('userProfile'))
     abort(404)
 
+@app.route('/delete_comment/<id>')
+def delete_comment(id):
+    if 'username' in session:
+        deleteComment = Comment.query.get(id)
+        db.session.delete(deleteComment)
+        db.session.commit()
+        
+        return redirect(url_for('home'))
+    abort(404)
+
 @app.route('/comment/<id>', methods=['POST'])
 def comment_post(id):
     if 'username' in session:
         user = User.query.filter_by(username=session['username']).first()
         userID = user.id
         
-        users_post = Post.query.filter_by(users_id=id).first()
+        users_post = Post.query.filter_by(id=id).first()
         if users_post :
 
             reply = Comment()

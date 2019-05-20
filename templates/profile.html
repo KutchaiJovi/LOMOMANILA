@@ -74,7 +74,6 @@
                                 <img src="https://bulma.io/images/placeholders/256x256.png">
                             </a> 
                         {% endif %}
-                    
                     </figure>
 
                     <div id="modal-img" class="modal">
@@ -260,9 +259,8 @@
                             <br>
                             {% if users.comments %}
                                 
-                                {% for user_comment in users.comments %}
+                                {% for comment in users.comments %}
 
-                                
                                     <p class="title is-6">
                                         {{ users.user_comment.post.post }}
                                         <p class="subtitle is-6">
