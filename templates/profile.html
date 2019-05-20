@@ -61,10 +61,14 @@
             <div class="card">
                 <div class="card-image">
                     <figure class="image is-square">
-                        {% if avatar %}   
-                            <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true">
-                                <img src="{{ avatar.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;"> 
-                            </a>
+                        {% if users.profile_picture %}
+                            {% if view == 1 %}
+                                <img src="/{{ users.profile_picture.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;">
+                            {% else %}
+                                <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true">
+                                    <img src="/{{ users.profile_picture.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;"> 
+                                </a>
+                            {% endif %}
                         {% else %}
                             <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img2" aria-haspopup="true">
                                 <img src="https://bulma.io/images/placeholders/256x256.png">
@@ -82,7 +86,7 @@
                                 </header>
                                 <section class="modal-card-body">
                                     <div class="content">
-                                        <form method="POST" action="/avatar/{{ avatar.id }}" enctype="multipart/form-data">
+                                        <form method="POST" action="/avatar/{{ users.profile_picture.id }}" enctype="multipart/form-data">
 
                                             <label class="label is-dark" style="font-size: 10px;">PROFILE PICTURE</label>
                                             <input class="is-light is-focused" type="file" name="profilePic" placeholder="">
@@ -265,11 +269,13 @@
                                                 {{ userPost.post }}<br>
                                             </p>
                                         </div>
+                                        {% if not view %}
                                         <div class="column media-right">
                                             <a href="/delete_post/{{ userPost.id }}">
                                                 <i class="fa fa-trash" aria-hidden="true"></i>
                                             </a>
                                         </div>
+                                        {% endif %}
                                     </div>
                                     
                                     {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>

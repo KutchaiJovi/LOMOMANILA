@@ -187,9 +187,9 @@
                               <div class="columns">
                                 <div class="column is-2">
                                     <p class="image is-48x48">
-                                      {{ comment.user.id }}
+                                        <br>
                                         {% if avatar %}    
-                                          <img src="{{ comment.post.picpath }}" alt="Avatar">
+                                          <img src="{{ comment.user.profile_picture.picpath }}" alt="Avatar">
                                         {% else %}
                                           <img src="https://bulma.io/images/placeholders/256x256.png">
                                         {% endif %}
