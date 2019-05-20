@@ -142,112 +142,120 @@
                         <br>
                     </div>
                 </div>
-                
-                <footer class="card-footer">
-                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
-                <!-- MODAL -->
-                    <div id="modal-ter" class="modal">
-                        <div class="modal-background">
-                            <div class="modal-card" style="margin-top: 20px;">
-                                <header class="modal-card-head">
-                                    <p class="modal-card-title">Edit Profile</p>
-                                    <button class="delete" aria-label="close"></button>
-                                </header>
-                                <section class="modal-card-body">
-                                    <div class="content">
-                                        <form method="POST" action="/update/{{ new.id }}" enctype="multipart/form-data">
-
-                                            <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
-                                            <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
-                                            <hr>
-                                            
-                                            <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label>
-                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editCam" value="{{ new.favecam }}">
-                                            <hr>
-                                            
-                                            <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label>
-                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editRoll" value="{{ new.faveroll }}">
-                                            <hr>
-
-                                            <label class="label is-dark" style="font-size: 10px;">SHOOTS</label>
-                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editSub" value="{{ new.favesubject }}">
-                                            <hr>
-
-                                            <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
-                                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editIG" value="{{ users.ig }}">
-                                            
-                                    </div>
-                                </section>
-                                    <footer class="modal-card-foot">
-                                        <button class="button1" type="submit" name="submit">UPDATE</button>
-                                        </form>
-                                    </footer>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="#" class="card-footer-item modal-button" data-target="modal-ter2" aria-haspopup="true" style="color: #7A3934;">SETTINGS</a>
-                    <!-- MODAL 2 -->
-                    <div id="modal-ter2" class="modal">
-                            <div class="modal-background">
-                                <div class="modal-card" style="margin-top: 20px;">
-                                    <header class="modal-card-head">
-                                        <p class="modal-card-title">Update Information</p>
-                                        <button class="delete" aria-label="close"></button>
-                                    </header>
-                                    <section class="modal-card-body">
-                                        <div class="content">
-                                            <form method="POST" action="/settings/{{ new.id }}">
-
-                                                <label class="label is-dark" style="font-size: 10px;">USERNAME</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editusername" value="{{ users.username }}">
-                                                <hr>
-                                                
-                                                <label class="label is-dark" style="font-size: 10px;">FIRST NAME</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editfname" value="{{ users.fname }}">
-                                                <hr>
-
-                                                <label class="label is-dark" style="font-size: 10px;">LAST NAME</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editlname" value="{{ users.lname }}">
-                                                <hr>
-
-                                                <div class="columns">
-                                                    <div class="column">
-                                                        <label class="label is-dark" style="font-size: 10px;">GENDER</label>
-                                                        <div class="select is-light">
-                                                            <select name="editgender" value="{{ users.gender }}">
-                                                                <option> {{ users.gender }} </option>
-                                                                <option>Male</option>
-                                                                <option>Female</option>
-                                                                <option>Fluid</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="column">
-                                                        <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
-                                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ users.bdate }}" placeholder="{{ users.bdate }}" required>
-                                                    </div>
-                                                    <div class="column"></div>
-                                                </div>
-                                                <hr>
-
-                                                <label class="label is-dark" style="font-size: 10px;">EMAIL ADDRESS</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editemail" value="{{ users.email }}">
-                                                <hr>
-
-                                                <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
-                                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ users.pword }}">
-
-                                        </div>
-                                    </section>
-                                        <footer class="modal-card-foot">
-                                            <button class="button1" type="submit" name="sumbit">UPDATE</button>
-                                            </form>
-                                        </footer>
-                                </div>
-                            </div>
-                        </div>
-                </footer>
+                {% if users.profile_picture %}
+                    {% if not view %}
+                        <footer class="card-footer">
+                            <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
+                        
+                            <a href="#" class="card-footer-item modal-button" data-target="modal-ter2" aria-haspopup="true" style="color: #7A3934;">SETTINGS</a>
+                            
+                        </footer>
+                    {% endif %}
+                {% endif %}
             </div>
+
+<!-- MODAL -->
+<div id="modal-ter" class="modal">
+        <div class="modal-background">
+            <div class="modal-card" style="margin-top: 20px;">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Edit Profile</p>
+                    <button class="delete" aria-label="close"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="content">
+                        <form method="POST" action="/update/{{ new.id }}" enctype="multipart/form-data">
+
+                            <label class="label is-dark" style="font-size: 10px;">ABOUT YOURSELF</label>
+                            <textarea class="textarea is-light is-focused" type="text" name="editDesc" placeholder="">{{ new.description }}</textarea>
+                            <hr>
+                            
+                            <label class="label is-dark" style="font-size: 10px;">ALL TIME FILM CAMERA</label>
+                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editCam" value="{{ new.favecam }}">
+                            <hr>
+                            
+                            <label class="label is-dark" style="font-size: 10px;">FAVORITE FILM ROLL</label>
+                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editRoll" value="{{ new.faveroll }}">
+                            <hr>
+
+                            <label class="label is-dark" style="font-size: 10px;">SHOOTS</label>
+                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editSub" value="{{ new.favesubject }}">
+                            <hr>
+
+                            <label class="label is-dark" style="font-size: 10px;">INSTAGRAM ACCOUNT</label>
+                            <input class="input is-light is-focused" style="width:20em;" type="text" name="editIG" value="{{ users.ig }}">
+                            
+                    </div>
+                </section>
+                    <footer class="modal-card-foot">
+                        <button class="button1" type="submit" name="submit">UPDATE</button>
+                        </form>
+                    </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL 2 -->
+    <div id="modal-ter2" class="modal">
+            <div class="modal-background">
+                <div class="modal-card" style="margin-top: 20px;">
+                    <header class="modal-card-head">
+                        <p class="modal-card-title">Update Information</p>
+                        <button class="delete" aria-label="close"></button>
+                    </header>
+                    <section class="modal-card-body">
+                        <div class="content">
+                            <form method="POST" action="/settings/{{ new.id }}">
+
+                                <label class="label is-dark" style="font-size: 10px;">USERNAME</label>
+                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editusername" value="{{ users.username }}">
+                                <hr>
+                                
+                                <label class="label is-dark" style="font-size: 10px;">FIRST NAME</label>
+                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editfname" value="{{ users.fname }}">
+                                <hr>
+
+                                <label class="label is-dark" style="font-size: 10px;">LAST NAME</label>
+                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editlname" value="{{ users.lname }}">
+                                <hr>
+
+                                <div class="columns">
+                                    <div class="column">
+                                        <label class="label is-dark" style="font-size: 10px;">GENDER</label>
+                                        <div class="select is-light">
+                                            <select name="editgender" value="{{ users.gender }}">
+                                                <option> {{ users.gender }} </option>
+                                                <option>Male</option>
+                                                <option>Female</option>
+                                                <option>Fluid</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="column">
+                                        <label class="label is-dark" style="font-size: 10px;">BIRTHDATE</label>
+                                        <input class="input is-light" style="width:15em;" type="date" name="editbdate" value="{{ users.bdate }}" placeholder="{{ users.bdate }}" required>
+                                    </div>
+                                    <div class="column"></div>
+                                </div>
+                                <hr>
+
+                                <label class="label is-dark" style="font-size: 10px;">EMAIL ADDRESS</label>
+                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editemail" value="{{ users.email }}">
+                                <hr>
+
+                                <label class="label is-dark" style="font-size: 10px;">PASSWORD</label>
+                                <input class="input is-light is-focused" style="width:20em;" type="text" name="editpword" value="{{ users.pword }}">
+
+                        </div>
+                    </section>
+                        <footer class="modal-card-foot">
+                            <button class="button1" type="submit" name="sumbit">UPDATE</button>
+                            </form>
+                        </footer>
+                </div>
+            </div>
+        </div>
+
             <hr>
             <div class="card">
             <div class="card-content">
