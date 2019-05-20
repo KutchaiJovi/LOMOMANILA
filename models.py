@@ -16,7 +16,8 @@ class User(db.Model):
     ig = db.Column(db.String(50), nullable=False)
 
     profile_picture = db.relationship('ProfilePicture', uselist=False)
-
+    user_comment = db.relationship('Comment', uselist=False)
+    
 class SignupNext(db.Model):
     __tablename__ = 'signupNext'
     id = db.Column(db.Integer, primary_key=True)
@@ -44,7 +45,6 @@ class Post(db.Model):
     
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
     pic = db.relationship('ProfilePicture', backref=db.backref('posts', lazy=True))
-    # comments = db.relationship('Comment', backref=db.backref('posts', lazy=True))
 
 class ProfilePicture(db.Model):
     __tablename__ = 'profilepictures'

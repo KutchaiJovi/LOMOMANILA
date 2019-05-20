@@ -288,8 +288,6 @@ def comment_post(id):
             return redirect(url_for('home'))
     abort(404)
 
-
-
 #ERROR PAGE
 @app.errorhandler(404)
 def page_not_found(error):

@@ -56,7 +56,6 @@ def login():
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.all()
         avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
-        # rep = Comment.query.filter_by(rep_id=user.id).all()
         
         return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     # if current_user.is_authenticated:

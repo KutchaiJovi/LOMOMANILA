@@ -249,6 +249,42 @@
                         </div>
                 </footer>
             </div>
+            <hr>
+            <div class="card">
+            <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="subtitle is-5">
+                                Commented Posts:
+                            </p>
+                            <br>
+                            {% if users.comments %}
+                                
+                                {% for user_comment in users.comments %}
+
+                                
+                                    <p class="title is-6">
+                                        {{ users.user_comment.post.post }}
+                                        <p class="subtitle is-6">
+                                            {{ users.user_comment.comment }}
+                                            <p class="help">
+                                                {{ users.user_comment.commentDate }} <br>
+                                            </p>
+                                        </p>
+                                    </p>
+                                    <hr>
+                                {% endfor %}
+                            {% else %}
+                                <p class="subtitle is-6">
+                                    No commented posts yet.
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
         </div>
 
         <div class="column is-6">
@@ -280,7 +316,7 @@
                                     
                                     {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
                                     <time datetime="1-1-2016">{{ userPost.postDate }}</time>
-                                    <img src='{{ userPost.imagepath }}'><br>
+                                    <img src='/{{ userPost.imagepath }}'><br>
                                 </div>
                         </article>
                     
