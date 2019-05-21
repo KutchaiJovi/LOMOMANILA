@@ -65,9 +65,14 @@
                             {% if view == 1 %}
                                 <img src="/{{ users.profile_picture.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;">
                             {% else %}
-                                <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img" aria-haspopup="true">
+                            <div class="con">
+                                <a href="#" class="card-footer-item modal-button avatar img" data-target="modal-img" aria-haspopup="true">
                                     <img src="/{{ users.profile_picture.picpath }}" alt="Update Profile Picture" style="height: auto; max-width: 270px;"> 
                                 </a>
+                                <div class="middle">
+                                    <div class="text">Update Avatar</div>
+                                </div>
+                            </div>
                             {% endif %}
                         {% else %}
                             <a href="#" class="card-footer-item modal-button avatar" data-target="modal-img2" aria-haspopup="true">
@@ -75,7 +80,7 @@
                             </a> 
                         {% endif %}
                     </figure>
-
+<!-- MODAL CHANGE PROFILE PIC -->
                     <div id="modal-img" class="modal">
                         <div class="modal-background">
                             <div class="modal-card" style="margin-top: 150px;">
@@ -99,7 +104,7 @@
                             </div>
                         </div>
                     </div>
-
+<!-- MODAL CHANGE AVATAR -->
                     <div id="modal-img2" class="modal">
                         <div class="modal-background">
                             <div class="modal-card" style="margin-top: 150px;">
@@ -154,7 +159,7 @@
                 {% endif %}
             </div>
 
-<!-- MODAL -->
+<!-- MODAL EDIT PROFILE-->
 <div id="modal-ter" class="modal">
         <div class="modal-background">
             <div class="modal-card" style="margin-top: 20px;">
@@ -195,7 +200,7 @@
         </div>
     </div>
 
-    <!-- MODAL 2 -->
+    <!-- MODAL 2 SETTINGS -->
     <div id="modal-ter2" class="modal">
             <div class="modal-background">
                 <div class="modal-card" style="margin-top: 20px;">
@@ -258,7 +263,7 @@
 
             <hr>
             <div class="card">
-            <div class="card-content">
+                <div class="card-content">
                     <div class="media">
                         <div class="media-content">
                             <p class="subtitle is-5">
@@ -322,7 +327,20 @@
                                     
                                     {{ userPost.filmCam }} , {{ userPost.filmRoll }}<br>
                                     <time datetime="1-1-2016">{{ userPost.postDate }}</time>
-                                    <img src='/{{ userPost.imagepath }}'><br>
+                                        <a class="is-primary is-large modal-button" data-target="{{ userPost.id }}">
+                                            <img src='/{{ userPost.imagepath }}'><br>
+                                        </a><br>
+
+                                        <div id="{{ userPost.id }}" class="modal">
+                                            <div class="modal-background"></div>
+                                            <div class="modal-content">
+                                            <p class="image">
+                                                <img src="/{{ userPost.imagepath }}" alt="{{ userPost.post }}">
+                                            </p>
+                                            </div>
+                                            <button class="modal-close is-large" aria-label="close"></button>
+                                        </div>
+
                                 </div>
                         </article>
                     

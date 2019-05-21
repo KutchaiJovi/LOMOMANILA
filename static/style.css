@@ -125,9 +125,41 @@ a.image1>img:hover{
     cursor: pointer;
 }
 
-/* a.avatar:hover{
+.img {
+    opacity: 1;
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: .5s ease;
+    backface-visibility: hidden;
+}
 
-} */
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.con:hover .image {
+    opacity: .5;
+}
+
+.con:hover .middle {
+    opacity: 1;
+    cursor: pointer;
+}
+
+.text {
+    color: white;
+    font-size: 16px;
+    margin-top: 150px;
+    padding: 16px 0;
+}
+
 @media only screen and (max-width: 768px){
     #errorText{
         margin: 0;

@@ -25,11 +25,11 @@
                     </div><br>
                     
                     <div class="control">
-                        <input class="input is-light is-focused" style="width:20em;" type="text" name="favecam" placeholder="Your film camera of all time." required>
+                        <input class="input is-light is-focused" maxlength="25" style="width:20em;" type="text" name="favecam" placeholder="Your film camera of all time." required>
                     </div><br>
 
                     <div class="control">
-                        <input class="input is-light is-focused" style="width:20em;" type="text" name="faveroll" placeholder="Favorite film roll." required>
+                        <input class="input is-light is-focused" maxlength="25" style="width:20em;" type="text" name="faveroll" placeholder="Favorite film roll." required>
                     </div><br>
 
                     <div class="control">
@@ -44,7 +44,7 @@
             <form action="/signup" method="post" style="width: 400px;">
                 <h1 class="font1" style="font-size: 25px; margin: 10px 0;">START HERE</h1>
                     <div class="control">
-                        <input class="input is-light is-focused" style="width:20em;" type="text" name="username" placeholder="Username" required>
+                        <input class="input is-light is-focused" maxlength="25" style="width:20em;" type="text" name="username" placeholder="Username" required>
                         {% if check == 1 %}
                             <p class="help is-info" style="padding-top: 10px;">Username already exists. Choose another one.</p>
                         {% endif %}
@@ -52,10 +52,10 @@
 
                     <div class="columns">
                         <div class="column">
-                            <input class="input is-light" type="text" name="firstName" placeholder="First Name" required>
+                            <input class="input is-light" type="text" maxlength="25" name="firstName" placeholder="First Name" required>
                         </div>
                         <div class="column">
-                            <input class="input is-light" type="text" name="lastName" placeholder="Last Name" required>
+                            <input class="input is-light" type="text" maxlength="25" name="lastName" placeholder="Last Name" required>
                         </div><br>
                     </div>
 
@@ -88,15 +88,15 @@
 
                     <br>
                     <div class="control">
-                        <input class="input is-light is-focused" style="width:15em;" type="text" name="igUsername" placeholder="@instagram_username" required>
+                        <input class="input is-light is-focused" maxlength="25" style="width:15em;" type="text" name="igUsername" placeholder="@instagram_username" required>
                     </div><br>
                     
                     <div class="columns">
                         <div class="column">
-                            <input class="input is-light" type="password" name="password" placeholder="Password" required>
+                            <input class="input is-light" type="password" name="password" maxlength="25" placeholder="Password" required>
                         </div>
                         <div class="column">
-                            <input class="input is-light" type="password" name="confPassword" placeholder="Confirm Password" required>
+                            <input class="input is-light" type="password" name="confPassword" maxlength="25" placeholder="Confirm Password" required>
                         </div>
                     </div>
                     {% if test == 2 %}

@@ -58,9 +58,6 @@ def login():
         avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
         
         return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost, avatar=avatar)
-    # if current_user.is_authenticated:
-    #     flash('You are already Signed In.')
-    #     return redirect(url_for('userProfile')) 
     return render_template('login.html', value=0)
 
 @auth.route('/login', methods=['POST'])
@@ -71,7 +68,6 @@ def loginForm():
         password = request.form['password']
         # remember = True if request.form.get('remember') else False
 
-        # user = User.query.filter_by(username=session['username'], pword=password).first() #filter results ; .all() -return all tasks
         user = User.query.filter_by(username=session['username']).first() #filter results ; .all() -return all tasks
         if not user or not check_password_hash(user.pword, password):
             session.clear()
@@ -79,7 +75,6 @@ def loginForm():
         # login_user(user, remember=remember)
         return redirect(url_for('home'))
     return render_template('login.html', value=0)
-
 
 
 # LOG OUT #
