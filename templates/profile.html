@@ -47,14 +47,6 @@
     });
 </script>
 
-<!-- {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <div class="notification is-danger">
-            {{ messages[0] }}
-        </div>
-    {% endif %}
-{% endwith %} -->
-
 <div class="container is-mobile is-centered" style="margin: 20px 50px;">
     <div class="columns is-centered">
         <div class="column is-3">
@@ -147,7 +139,7 @@
                         <br>
                     </div>
                 </div>
-                {% if users.profile_picture %}
+                {% if users %}
                     {% if not view %}
                         <footer class="card-footer">
                             <a href="#" class="card-footer-item modal-button" data-target="modal-ter" aria-haspopup="true" style="color: #7A3934;">EDIT PROFILE</a>
@@ -273,7 +265,7 @@
                             {% if users.comments %}
                                 
                                 {% for comment in users.comments %}
-
+                                
                                     <p class="title is-6">
                                         {{ users.user_comment.post.post }}
                                         <p class="subtitle is-6">
@@ -284,6 +276,7 @@
                                         </p>
                                     </p>
                                     <hr>
+                                
                                 {% endfor %}
                             {% else %}
                                 <p class="subtitle is-6">

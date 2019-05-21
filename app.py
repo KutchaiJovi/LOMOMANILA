@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash, abort
 from models import db, User, SignupNext, Post, Comment, ProfilePicture
 from flask_login import LoginManager, login_required, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
+
 
 from routes.auth import auth
 import datetime
@@ -29,7 +31,7 @@ app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = '201601140@iacademy.edu.ph'
-app.config['MAIL_PASSWORD'] = 'password'
+app.config['MAIL_PASSWORD'] = '272829turkey'
 app.config['MAIL_DEFAULT_SENDER'] = '201601140@iacademy.edu.ph'
 mail = Mail(app)
 
@@ -156,7 +158,7 @@ def resetpassword():
             if confpword != pword :
                 return  render_template('resetPassword.html', value=0, check=2)
             else :
-                update.pword = request.form['newpword']
+                update.pword = generate_password_hash(pword,method='sha256')
 
                 db.session.add(update)
                 db.session.commit()

@@ -2,7 +2,5 @@ flask
 flask-sqlalchemy
 mysqlclient
 Flask-Mail
-WTForms
 flask-login
 python-dateutil
-Pillow==5.3.0

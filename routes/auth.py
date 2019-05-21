@@ -12,15 +12,13 @@ from flask_mail import Message
 from app import mail
 import smtplib
 
-def send_email(subject, sender, recipients, text_body, html_body):
-    
-    if 'username' in session:
-        user = User.query.filter_by(username=session['username']).first()
-
-        msg = Message(subject, sender=sender, recipients=user.email)
-        msg.body = text_body
-        msg.html = redirect(url_for('email'))
-        mail.send(msg)
+def send_email(subject, email, username):
+	msg = Message(subject,
+				sender="201601140@iacademy.edu.ph",
+				recipients=["201601140@iacademy.edu.ph"])
+	msg.html = render_template('email.html',username=username)
+	mail.send(msg)
+	return 'OK'
 
 @auth.route('/email')
 def email():
@@ -65,13 +63,11 @@ def loginForm():
     if request.method == 'POST' :
         session['username'] = request.form['username']
         password = request.form['password']
-        # remember = True if request.form.get('remember') else False
 
         user = User.query.filter_by(username=session['username']).first() #filter results ; .all() -return all tasks
         if not user or not check_password_hash(user.pword, password):
             session.clear()
             return render_template('login.html', test=2, value=0)
-        # login_user(user, remember=remember)
         return redirect(url_for('home'))
     return render_template('login.html', value=0)
 
@@ -87,8 +83,19 @@ def logout():
 def lomoOn():
     return render_template('signup.html', value=0)
 
+@auth.route('/signup')
+def testsignUp():
+    if 'username' in session:
+        user = User.query.filter_by(username=session['username']).first()
+        new = SignupNext.query.filter_by(id=user.id).first()
+        newPost = Post.query.all()
+        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
+        
+        return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost, avatar=avatar)
+    return render_template('signup.html', value=0)
+
 @auth.route('/signup', methods=['POST'])
-def signUp():
+def signUp_post():
 
     if 'username' in session :
         return render_template('home.html', logged=True)
@@ -120,9 +127,6 @@ def signUp():
                 db.session.add(users)
                 db.session.commit()
                 session['username'] = users.username
-
-                message = 'Welcome to my forum'
-                send_email('Welcome', users.username, users.email, message, message)
 
                 return render_template('signup.html', value=1, sign=1)
         return render_template('signup.html', value=0, check=1 , sign=0)

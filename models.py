@@ -44,7 +44,6 @@ class Post(db.Model):
     
     users = db.relationship('User', backref=db.backref('posts', lazy=True))
     pic = db.relationship('ProfilePicture', backref=db.backref('posts', lazy=True))
-    # rep = db.relationship('Comment', backref=db.backref('posts', lazy=True))
 
 class ProfilePicture(db.Model):
     __tablename__ = 'profilepictures'
@@ -64,5 +63,5 @@ class Comment(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
     user = db.relationship('User', backref=db.backref('comments', lazy=True))
-    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=False)
+    post_id = db.Column(db.Integer, db.ForeignKey('posts.id'), nullable=True)
     post = db.relationship('Post', backref=db.backref('comments', lazy=True))
