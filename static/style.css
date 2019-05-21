@@ -14,7 +14,7 @@ body {
     background-image: url(lomoBG.jpg);
     background-repeat: no-repeat;
     background-size: cover;
-    background-position: center center;
+    background-position: bottom center;
     min-height: 100vh;
     min-width: 100vw;
     background-attachment: fixed;
@@ -41,7 +41,6 @@ body {
 .font1{
     color: white;
     font-family: 'JaapokkiRegular';
-    /* font-family: 'Raleway', sans-serif; */
 }
 
 h1.font1{
@@ -51,7 +50,6 @@ h1.font1{
 a{
     text-decoration: none;
     color: white;
-    /* font-weight: bold; */
 }
 
 .sign{
@@ -59,7 +57,6 @@ a{
     font-size: 20px;
     font-family: 'JaapokkiRegular';
     padding: 5px;
-    /* border-color: #7A3933 */
 }
 
 a.sign:hover{

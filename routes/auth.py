@@ -22,7 +22,6 @@ def send_email(subject, sender, recipients, text_body, html_body):
         msg.html = redirect(url_for('email'))
         mail.send(msg)
 
-
 @auth.route('/email')
 def email():
     user = User.query.filter_by(username=session['username']).first()
@@ -121,6 +120,9 @@ def signUp():
                 db.session.add(users)
                 db.session.commit()
                 session['username'] = users.username
+
+                message = 'Welcome to my forum'
+                send_email('Welcome', users.username, users.email, message, message)
 
                 return render_template('signup.html', value=1, sign=1)
         return render_template('signup.html', value=0, check=1 , sign=0)

@@ -25,22 +25,12 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # EMAIL #
 from flask_mail import Mail, Message
 
-app.config.update(
-    DEBUG=True,
-    #Email Settings
-    MAIL_SERVER = 'smtp.gmail.com',
-    MAIL_PORT=465,
-	MAIL_USE_SSL=True,
-	MAIL_USERNAME = '201601140@iacademy.edu.ph',
-	MAIL_PASSWORD = '272829turkey'
-    )
-
-# app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-# app.config['MAIL_PORT'] = 587
-# app.config['MAIL_USE_TLS'] = True
-# app.config['MAIL_USERNAME'] = 'LOMOMANILA'
-# app.config['MAIL_PASSWORD'] = 'password'
-# app.config['MAIL_DEFAULT_SENDER'] = '201601140@iacademy.edu.ph'
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = '201601140@iacademy.edu.ph'
+app.config['MAIL_PASSWORD'] = 'password'
+app.config['MAIL_DEFAULT_SENDER'] = '201601140@iacademy.edu.ph'
 mail = Mail(app)
 
 # LOG IN MANAGER #
@@ -213,12 +203,7 @@ def home():
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.all()
         avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
-        # rep = Comment.query.filter_by(posts_id=newPost.id).all()
-        # comments = []
-        # for post in newPost:
-            # comments = Comment.query.filter_by(post_id=post.id).all()
-            # post['comments'] = comments
-            # comments[post.id] = comments
+
         if not newPost :
             if not avatar :
                 return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=0)
