@@ -44,7 +44,7 @@ Specs and Functions
 				Details
 				Profile Picture
 					Update
-					Placeholders/avatar
+					Placeholders
 			Commented posts
 			Authored posts
 				Bigger view through modal
