@@ -40,16 +40,17 @@ login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
 
-#Creates cookie and searches it in db from id
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
+# IMAGE - FILENAME #
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# UPDATE #
+# UPDATES #
 @app.route('/avatar', methods=['POST'])
 def newAvatar():
 
@@ -164,6 +165,7 @@ def resetpassword():
                 db.session.commit()
                 return redirect(url_for('auth.loginForm'))
         return render_template('resetPassword.html', value=0, test=3)
+    abort(404)
 
 # PROFILE PAGE #
 @app.route('/profile/<id>', methods=['GET'])
@@ -174,10 +176,7 @@ def otherProfile(id):
         newPost = Post.query.filter_by(users_id=user.id).all()
         
         if not newPost :
-            if not avatar :
-                return render_template('profile.html', users=user, new=new, value=1, newPost=0)
-            else :
-                return render_template('profile.html', users=user, new=new, value=1, newPost=0)
+            return render_template('profile.html', users=user, new=new, value=1, newPost=0)
         return render_template('profile.html', users=user, new=new, value=1, newPost=newPost, view=1)
     abort(404)
 
@@ -187,13 +186,9 @@ def userProfile():
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.filter_by(users_id=user.id).all()
-        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
 
         if not newPost :
-            if not avatar :
-                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=0)
-            else :
-                return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+            return render_template('profile.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
         return render_template('profile.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
@@ -204,13 +199,9 @@ def home():
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.all()
-        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
 
         if not newPost :
-            if not avatar :
-                return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=0)
-            else :
-                return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
+            return render_template('home.html', users=user, new=new, value=1, newPost=0, avatar=avatar)
         return render_template('home.html', users=user, new=new, value=1, newPost=newPost, avatar=avatar)
     abort(404)
 
@@ -248,6 +239,8 @@ def userPost():
 def delete_post(id):
     if 'username' in session:
         post = Post.query.get(id)
+        
+        delete_comment(id)
         db.session.delete(post)
         db.session.commit()
         

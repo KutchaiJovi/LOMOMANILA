@@ -59,8 +59,8 @@
               <div class="card">
                   <div class="card-image">
                       <figure class="image is-square" >
-                        {% if avatar %}    
-                          <img src="{{ avatar.picpath }}" alt="Update Avatar" >
+                        {% if users.profile_picture %}    
+                          <img src="/{{ users.profile_picture.picpath }}" alt="Update Avatar" >
                         {% else %}
                           <img src="https://bulma.io/images/placeholders/256x256.png">
                         {% endif %}
@@ -148,7 +148,7 @@
                   <figure class="media-left" style="margin-right: 50px;">
                     <p class="image is-96x96">
                       <a href="/profile/{{ userPost.users_id }}">
-                      {% if avatar == avatar %}    
+                      {% if users.profile_picture %}    
                         <img src="{{ userPost.pic.picpath }}" alt="Update Profile Picture">
                       {% else %}
                         <img src="https://bulma.io/images/placeholders/256x256.png">
@@ -188,7 +188,7 @@
                                 <div class="column is-2">
                                     <p class="image is-48x48">
                                         <br>
-                                        {% if avatar %}    
+                                        {% if users.profile_picture %}    
                                           <img src="{{ comment.user.profile_picture.picpath }}" alt="Avatar">
                                         {% else %}
                                           <img src="https://bulma.io/images/placeholders/256x256.png">
@@ -213,8 +213,8 @@
                           <div class="columns">
                             <div class="column is-1">
                                 <p class="image is-48x48">
-                                    {% if avatar %}    
-                                      <img src="{{ avatar.picpath }}" alt="Update Profile Picture">
+                                    {% if users.profile_picture %}    
+                                      <img src="/{{ users.profile_picture.picpath }}" alt="Update Profile Picture">
                                     {% else %}
                                       <img src="https://bulma.io/images/placeholders/256x256.png">
                                     {% endif %}

@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, flash
+from flask import Flask, Blueprint, render_template, request, session, redirect, url_for, flash, abort
 from models import db, User, SignupNext, Post, Comment, ProfilePicture
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import login_user, logout_user, login_required, current_user
@@ -23,7 +23,7 @@ def send_email(subject, email, username):
 @auth.route('/email')
 def email():
     user = User.query.filter_by(username=session['username']).first()
-    render_template('email.html', user=user)
+    return render_template('email.html', user=user)
 
 # DATABASE AND CONNECTION #
 @auth.route('/test-connection')
@@ -52,9 +52,8 @@ def login():
         user = User.query.filter_by(username=session['username']).first()
         new = SignupNext.query.filter_by(id=user.id).first()
         newPost = Post.query.all()
-        avatar = ProfilePicture.query.filter_by(pic_id=user.id).first()
         
-        return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost, avatar=avatar)
+        return render_template('home.html', logged=True, users=user, new=new, value=1, newPost=newPost)
     return render_template('login.html', value=0)
 
 @auth.route('/login', methods=['POST'])
@@ -81,7 +80,7 @@ def logout():
 # SIGN UP #
 @auth.route('/lomoOn')
 def lomoOn():
-    return render_template('signup.html', value=0)
+    return testsignUp()
 
 @auth.route('/signup')
 def testsignUp():
@@ -149,3 +148,4 @@ def signUpNext():
         db.session.add(new)
         db.session.commit()
         return redirect(url_for('userProfile'))
+    abort(404)
