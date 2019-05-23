@@ -267,11 +267,11 @@
                                 {% for comment in users.comments %}
                                 
                                     <p class="title is-6">
-                                        {{ users.user_comment.post.post }}
+                                        {{ comment.post.post }}
                                         <p class="subtitle is-6">
-                                            {{ users.user_comment.comment }}
+                                            {{ comment.comment }}
                                             <p class="help">
-                                                {{ users.user_comment.commentDate }} <br>
+                                                {{ comment.commentDate }} <br>
                                             </p>
                                         </p>
                                     </p>
