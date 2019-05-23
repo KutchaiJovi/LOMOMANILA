@@ -333,31 +333,48 @@
                                             </div>
                                             <button class="modal-close is-large" aria-label="close"></button>
                                         </div>
-                                        {% for comment in userPost.comments %}
-                                            <div class="columns">
-                                                <div class="column is-2">
-                                                    <p class="image is-48x48 media-right">
-                                                        <br>
-                                                        {% if users.profile_picture %}    
-                                                        <img src="{{ comment.user.profile_picture.picpath }}" alt="Avatar">
-                                                        {% else %}
-                                                        <img src="https://bulma.io/images/placeholders/256x256.png">
+                                        {% if userPost.comments %}
+                                            <hr>
+                                            Comments
+                                            {% for comment in userPost.comments %}
+                                                <div class="columns">
+                                                    <div class="column is-2">
+                                                        <p class="image is-48x48 media-right">
+                                                            <br>
+                                                            {% if users.profile_picture %}    
+                                                            <img src="/{{ comment.user.profile_picture.picpath }}" alt="Avatar">
+                                                            {% else %}
+                                                            <img src="https://bulma.io/images/placeholders/256x256.png">
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                    <div class="column media-right">
+                                                        <br>{{ comment.comment }}<br><small>{{ comment.commentDate }}</small>
+                                                    </div>
+                                                    {% if not view %}
+                                                        
+                                                        <div class="column media-right is-2"><br>
+                                                            <a href="/delete_commentPost/{{ comment.id }}">
+                                                                <i class="fa fa-trash" aria-hidden="true" ></i>
+                                                            </a>
+                                                        </div>
+                                                        
+                                                    {% else %}
+                                                        
+                                                        {% if users.id == userPost.reply.user_id %}
+                                                            <div class="column media-right is-2"><br>
+                                                                <a href="/delete_commentPost/{{ users.user_comment.id }}">
+                                                                    <i class="fa fa-trash" aria-hidden="true" ></i>
+                                                                </a>
+                                                            </div>
                                                         {% endif %}
-                                                    </p>
+
+                                                    {% endif %}
                                                 </div>
-                                                <div class="column media-right">
-                                                    <br>{{ comment.comment }}<br><small>{{ comment.commentDate }}</small>
-                                                </div>
-                                                
-                                                {% if users.id == comment.user_id %}
-                                                <div class="column media-right is-2"><br>
-                                                    <a href="/delete_comment/{{ users.user_comment.id }}">
-                                                        <i class="fa fa-trash" aria-hidden="true" ></i>
-                                                    </a>
-                                                </div>
-                                                {% endif %}
-                                            </div>
-                                        {% endfor %}
+                                            {% endfor %}
+                                        {% else %}
+                                            No comments yet.
+                                        {% endif %}
                                 </div>
                         </article>
                     

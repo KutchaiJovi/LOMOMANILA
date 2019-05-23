@@ -235,6 +235,16 @@ def delete_comment(id):
         return redirect(url_for('home'))
     abort(404)
 
+@app.route('/delete_commentPost/<id>')
+def delete_commentPost(id):
+    if 'username' in session:
+        deleteComment = Comment.query.get(id)
+        db.session.delete(deleteComment)
+        db.session.commit()
+        
+        return redirect(url_for('userProfile'))
+    abort(404)
+
 @app.route('/comment/<id>', methods=['POST'])
 def comment_post(id):
     if 'username' in session:
