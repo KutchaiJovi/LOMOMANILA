@@ -141,31 +141,9 @@ def index():
 
 @app.route('/about')
 def about():
+    if 'username' in session:
+        return render_template('about.html', value=1)
     return render_template('about.html', value=0)
-
-# PASSWORD #
-@app.route('/reset')
-def reset():
-    return render_template('resetPassword.html', value=0)
-
-@app.route('/resetpassword', methods=['POST'])
-def resetpassword():
-
-    if request.method == 'POST' :
-        pword = request.form['newpword']
-        confpword = request.form['confpword']
-        update = User.query.filter_by(email=request.form['email']).first()
-        if update:
-            if confpword != pword :
-                return  render_template('resetPassword.html', value=0, check=2)
-            else :
-                update.pword = generate_password_hash(pword,method='sha256')
-
-                db.session.add(update)
-                db.session.commit()
-                return redirect(url_for('auth.loginForm'))
-        return render_template('resetPassword.html', value=0, test=3)
-    abort(404)
 
 # PROFILE PAGE #
 @app.route('/profile/<id>', methods=['GET'])

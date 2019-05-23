@@ -97,7 +97,7 @@ def testsignUp():
 def signUp_post():
 
     if 'username' in session :
-        return render_template('home.html', logged=True)
+        return testsignUp()
     elif 'username' not in session and request.method == 'POST' :
         users = User()
         newUser = request.form['username']
@@ -148,4 +148,30 @@ def signUpNext():
         db.session.add(new)
         db.session.commit()
         return redirect(url_for('userProfile'))
+    abort(404)
+
+# PASSWORD #
+@auth.route('/resetpassword')
+def reset():
+    if 'username' in session:
+        return testsignUp()
+    return render_template('resetPassword.html', value=0)
+
+@auth.route('/resetpassword', methods=['POST'])
+def resetpassword():
+
+    if request.method == 'POST' :
+        pword = request.form['newpword']
+        confpword = request.form['confpword']
+        update = User.query.filter_by(email=request.form['email']).first()
+        if update:
+            if confpword != pword :
+                return  render_template('resetPassword.html', value=0, check=2)
+            else :
+                update.pword = generate_password_hash(pword,method='sha256')
+
+                db.session.add(update)
+                db.session.commit()
+                return redirect(url_for('loginForm'))
+        return render_template('resetPassword.html', value=0, test=3)
     abort(404)
