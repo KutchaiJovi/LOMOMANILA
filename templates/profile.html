@@ -359,16 +359,6 @@
                                                             </a>
                                                         </div>
                                                         
-                                                    {% else %}
-                                                        
-                                                        {% if users.id == userPost.reply.user_id %}
-                                                            <div class="column media-right is-2"><br>
-                                                                <a href="/delete_commentPost/{{ users.user_comment.id }}">
-                                                                    <i class="fa fa-trash" aria-hidden="true" ></i>
-                                                                </a>
-                                                            </div>
-                                                        {% endif %}
-
                                                     {% endif %}
                                                 </div>
                                             {% endfor %}
