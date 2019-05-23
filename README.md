@@ -42,6 +42,7 @@ Specs and Functions
 	Profile Page:
 		Session Management
 			Only logged user can alter his/her profile
+			 
 		Display
 			User info
 				Details
@@ -52,6 +53,7 @@ Specs and Functions
 			Authored posts
 				Bigger view through modal
 				Delete post
+				Delete both authored and other user comments
 			Update Profile
 				About details
 				Required fields and input restriction
