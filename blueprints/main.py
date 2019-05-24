@@ -15,7 +15,7 @@ moment = Moment(app)
 from flask_mail import Mail
 from flask_mail import Message
 from flask_sqlalchemy import SQLAlchemy
-import os
+import os  
 
 app = Flask(__name__)
 app.secret_key = 'BERNARDINO12'
