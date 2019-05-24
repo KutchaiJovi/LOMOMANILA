@@ -1,0 +1,59 @@
+
+<div class="column is-4 is-offset-4">
+    <h3 class="title">Edit</h3>
+    <div class="box">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="notification is-danger">
+                {{ messages[0] }}. Go to <a href="{{ url_for('main.index') }}">login page</a>. 
+            </div>
+        {% endif %}
+        {% endwith %}
+        {{ name }}
+        <form method="POST" action="/editprofile">
+            <div class="field">
+                <div class="control">
+                    <p>Username</p>
+                    <input class="input is-large" type="text" name="username" placeholder="{{username}}" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                        <p>About</p>
+                    <input class="input is-large" type="text" name="about_me" placeholder="{{about}}" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                        <p>Fave Camera</p>
+                    <input class="input is-large" type="text" name="favecam" placeholder="{{favecam}}" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                        <p>Favorite roll</p>
+                    <input class="input is-large" type="text" name="faveroll" placeholder="{{faveroll}}" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                        <p>Favorite Subject</p>
+                    <input class="input is-large" type="text" name="favesubj" placeholder="{{favesubj}}" autofocus="">
+                </div>
+            </div>
+
+            <div class="field">
+                <div class="control">
+                        <p>Insta account</p>
+                    <input class="input is-large" type="text" name="instagram_account" placeholder="{{instagram_account}}">
+                </div>
+            </div>
+
+            <button class="button is-block is-info is-large is-fullwidth">Update</button>
+        </form>
+    </div>
+</div>
